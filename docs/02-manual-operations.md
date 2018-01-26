@@ -55,7 +55,7 @@ $ ssh-add -l
 
 ## Install Application Dependencies
 
-To run the application, you need to install its [dependencies](https://github.com/Artemmkin/raddit#application-dependencies) first.
+To start the application, you need to first configure the environment for running it.
 
 Connect to the started VM via SSH:
 
@@ -77,7 +77,7 @@ Check the installed version of Ruby:
 $ ruby -v
 ```
 
-Install bundler:
+Install Bundler:
 
 ```bash
 $ sudo gem install --no-rdoc --no-ri bundler
