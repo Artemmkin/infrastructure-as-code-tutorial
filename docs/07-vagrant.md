@@ -223,7 +223,7 @@ $ puma
 
 Let's try to recreate our dev environment from scratch to see how big of a problem it will be.
 
-Run the following commands to destroy the old and create a new dev environment:
+Run the following commands to destroy the current dev environment and create a new one:
 
 ```bash
 $ vagrant destroy -f
