@@ -58,7 +58,7 @@ Save it to the `configuration.sh` file inside created `scripts` directory:
 
 ```bash
 #!/bin/bash
-set -xe
+set -e
 
 echo "  ----- install ruby and bundler -----  "
 apt-get update
@@ -88,7 +88,7 @@ Save it into `deploy.sh` file inside `scripts` directory:
 
 ```bash
 #!/bin/bash
-set -xe
+set -e
 
 echo "  ----- clone application repository -----  "
 git clone https://github.com/Artemmkin/raddit.git

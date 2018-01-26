@@ -57,7 +57,7 @@ Let's look at our `deploy.sh`  script first to see what modules we might need to
 
 ```bash
 #!/bin/bash
-set -xe
+set -e
 
 echo "  ----- clone application repository -----  "
 git clone https://github.com/Artemmkin/raddit.git
