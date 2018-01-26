@@ -60,7 +60,7 @@ Terraform uses **resources** to describe different infrastructure components. If
 
 Let's use Terraform syntax to describe a VM instance that we want to be running.
 
-Create a terraform configuration file called `main.tf` inside the `terraform` directory with the following content:
+Create a Terraform configuration file called `main.tf` inside the `terraform` directory with the following content:
 
 ```
 resource "google_compute_instance" "raddit" {
@@ -262,7 +262,7 @@ With this approach, Terraform configuration becomes `a single source of truth` a
 
 All of this helps us get control over even the most complex infrastructure.
 
-Destroy the resources created by terraform and move on to the next lab.
+Destroy the resources created by Terraform and move on to the next lab.
 
 ```bash
 $ terraform destroy
