@@ -10,7 +10,7 @@ But what is about our local environment where we develop the code? Are there any
 
 Running our application locally would require us installing all of its dependencies and configuring the local system pretty much the same way as we did in the previous labs.
 
-There are few reasons why you don't want to do that:
+There are a few reasons why you don't want to do that:
 
 * `This can break your system`. When you change your system configuration there are lot of things that can go wrong. For example, when installing/removing different packages you can easily mess up the work of your system's package manager.
 * `When something breaks in your system configuration, it can take a long time to fix`. If you've messed up with you local system configuration, you either need to debug or reinstall your OS. Both of these can take a lot of your time and should be avoided.
