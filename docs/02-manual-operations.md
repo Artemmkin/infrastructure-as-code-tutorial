@@ -41,13 +41,13 @@ $ gcloud compute project-info add-metadata \
     --metadata ssh-keys="raddit-user:$(cat ~/.ssh/raddit-user.pub)"
 ```
 
-Add the SSH private key to ssh-agent:
+Add the SSH private key to the ssh-agent:
 
 ```
 $ ssh-add ~/.ssh/raddit-user
 ```
 
-Verify that the key was added to ssh agent:
+Verify that the key was added to the ssh-agent:
 
 ```bash
 $ ssh-add -l
