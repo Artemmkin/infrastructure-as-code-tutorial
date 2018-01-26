@@ -256,7 +256,7 @@ Save and commit the `terraform` folder created in this lab into your `iac-tutori
 
 In this lab, you saw in its most obvious way the application of Infrastructure as Code practice.
 
-We used `code` (Terraform configuration syntax) to describe the `desired state` of the infrastructure. Then we told Terraform to `bring the actual state of the infrastructure to the desired state` we described.
+We used `code` (Terraform configuration syntax) to describe the `desired state` of the infrastructure. Then we told Terraform to bring the actual state of the infrastructure to the desired state we described.
 
 With this approach, Terraform configuration becomes `a single source of truth` about the current state of your infrastructure. Moreover, the infrastructure is described as code, so we can apply to it the same practices we commonly use in development such as keeping the code in source control, use peer reviews for making changes, etc.
 
