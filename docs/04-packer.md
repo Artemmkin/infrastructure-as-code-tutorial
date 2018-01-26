@@ -2,11 +2,11 @@
 
 Scripts helped us speed up the process of system configuration, made it more reliable compared to doing everything manually, but there are still ways for improvement.
 
-In this lab, we're going to take a look at the first IaC tool called [Packer](https://www.packer.io/) and see how it can help improve our operations.
+In this lab, we're going to take a look at the first IaC tool called [Packer](https://www.packer.io/) and see how it can help us improve our operations.
 
 ## Intro
 
-Remember how in the second lab we had to make sure that the `git` was installed on the VM so that we could clone the application repo. Did it surprise you in a good way that the `git` was already installed on the system and we could skip the installation?
+Remember how in the second lab we had to make sure that the `git` was installed on the VM so that we could clone the application repo? Did it surprise you in a good way that the `git` was already installed on the system and we could skip the installation?
 
 Imagine, how nice it would be to have other required packages like Ruby and Bundler to be preinstalled on the VM we provision or have necessary configuration files come with the image, too. This would require even less time and effort from us to configure the system and run our application.
 
@@ -120,7 +120,7 @@ $ gcloud compute instances create raddit-instance-4 \
     --machine-type n1-standard-1
 ```
 
-## Deploy application
+## Deploy Application
 
 Copy `deploy.sh` script to the created VM:
 
@@ -150,7 +150,7 @@ $ chmod +x ./deploy.sh
 $ ./deploy.sh
 ```
 
-## Access the Application
+## Access Application
 
 Access the application in your browser by its public IP (don't forget to specify the port 9292).
 
