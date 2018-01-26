@@ -20,7 +20,7 @@ This is exactly what CM tools do. So let's check it out using Ansible as an exam
 
 ## Install Ansible
 
-NOTE: this lab assumes Ansible v2.4 is installed. It may not work as expected on other versions.
+NOTE: this lab assumes Ansible v2.4 is installed. It may not work as expected with other versions as things change quickly.
 
 You can follow the instructions on how to install Ansible on your system from [official documentation](http://docs.ansible.com/ansible/latest/intro_installation.html).
 
@@ -45,7 +45,7 @@ $ cd ./terraform
 $ terraform apply
 ```
 
-## 'deploy' playbook
+## Deploy playbook
 
 We'll rewrite our Bash script used for deployment using Ansible syntax.
 
