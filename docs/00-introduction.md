@@ -12,6 +12,6 @@ You start realizing that the problem you're facing is not as small as you though
 
 The craft is called **IT operations**. And in almost every IT department, there is an operations (Ops) team who manages the platform where the applications are running.
 
-The tutorial you are about to begin will give you, a young developer, a bit of a glance into what operations work look like and how you can do this work more effectively by using **Infrastructure as Code** approach.
+The tutorial you are about to begin will give you, a young developer, a bit of a glance into what operations work look like and how you can do this work more efficiently by using **Infrastructure as Code** approach.
 
 Next: [Prerequites](01-prerequisites.md)
