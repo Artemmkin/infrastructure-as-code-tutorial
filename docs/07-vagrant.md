@@ -1,6 +1,6 @@
 ## Vagrant
 
-In this tutorial, we're going to learn about [Vagrant](https://www.vagrantup.com/) which is another tool that implements IaC approach and is often used for creating development environments.
+In this lab, we're going to learn about [Vagrant](https://www.vagrantup.com/) which is another tool that implements IaC approach and is often used for creating development environments.
 
 ## Intro
 
