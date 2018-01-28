@@ -6,7 +6,7 @@ This time we'll learn how to describe in code and manage our local container inf
 
 ## Intro
 
-Remember how in the previous lab we had to use a lof `docker` CLI commands in order to run our application locally? Specifically, we had to create a network for containers to communicte, a volume for container with MongoDB, launch MongoDB container, launch our application container.
+Remember how in the previous lab we had to use a lot of `docker` CLI commands in order to run our application locally? Specifically, we had to create a network for containers to communicate, a volume for container with MongoDB, launch MongoDB container, launch our application container.
 
 This is a lot of manual work and we only have 2 containers in our setup. Imagine how much work it would be to run a microservices application which includes a dozen of services.
 
@@ -145,9 +145,9 @@ Save and commit the `docker-compose.yml` file created in this lab into your `iac
 
 In this lab, we learned how to use Docker Compose tool to implement Infrastructure as Code approach to managing a local container infrastructure. This helped us automate and document the process of creating all the necessary components for running our containerized application.
 
-If we keep created `docker-compose.yml` file in application repository, any of our colleages can create the same container environment on any system with just one command. This makes Docker Compose a perfect tool for creating local dev environments and simple application deployments.
+If we keep created `docker-compose.yml` file in application repository, any of our colleagues can create the same container environment on any system with just one command. This makes Docker Compose a perfect tool for creating local dev environments and simple application deployments.
 
-To destroy the local playgrouns, run the following command:
+To destroy the local playground, run the following command:
 
 ```bash
 $ docker-compose down

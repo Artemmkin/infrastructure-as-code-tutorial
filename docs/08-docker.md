@@ -8,10 +8,10 @@ Remember when we talked about packer, we mentioned a few words about `Immutable 
 
 Containers allow you to create self-contained isolated environments for running your applications.
 
-They have some signigicant advantages over VMs in terms of implementing Immutable Infrastructure model:
+They have some significant advantages over VMs in terms of implementing Immutable Infrastructure model:
 
-* `Containers are much faster to start than VMs` Container starts in seconds, while a VM takes minutes. It's important when you're doing an update/rollback or scaling your service.
-* `Containers enable better utilization of compute resources`. Very often computer resorces of a VM running an application underutilized. Launching multiple instances of the same application on one VM has a lot of difficulties: different application versions may need different versions of dependent libraries, init scripts require special configuration. With containers, running multiple instances of the same application on the same machine is easy and doesn't require any system configuration.
+* `Containers are much faster to start than VMs.` Container starts in seconds, while a VM takes minutes. It's important when you're doing an update/rollback or scaling your service.
+* `Containers enable better utilization of compute resources.` Very often computer resources of a VM running an application underutilized. Launching multiple instances of the same application on one VM has a lot of difficulties: different application versions may need different versions of dependent libraries, init scripts require special configuration. With containers, running multiple instances of the same application on the same machine is easy and doesn't require any system configuration.
 * `Containers are more lightweight than VMs.` Container images are much smaller than machine images, because they don't need a full operating system in order to run. In fact, a container image can include just a single binary and take just a few MBs of your disk space. This means that we need less space for storing the images and the process of distributing images goes faster.
 
 Let's try to implement `Immutable Infrastructure` model with Docker containers, while paying special attention to the `Dockerfile` part as a way to practice `Infrastructure as Code` approach.
@@ -30,9 +30,9 @@ $ docker -v
 
 ## Create Dockerfile
 
-You describe a container image that you want to create in a special file called `Dockerfile`.
+You describe a container image that you want to create in a special file called **Dockerfile**.
 
-Dockerfile contains `instructions` on how the image should be built. Here are some of the most common instructions that you can meed in a Dockerfile:
+Dockerfile contains `instructions` on how the image should be built. Here are some of the most common instructions that you can meet in a Dockerfile:
 
 * `FROM` is used to specify a `base image` for this build. It's similar to the builder configuration which we defined in a Packer template, but in this case instead of describing characteristics of a VM, we simply specify a name of a container image used for build. This should be the first instruction in the Dockerfile.
 * `ADD` and `COPY` are used to copy a file/directory to the container. See the [difference](https://stackoverflow.com/questions/24958140/what-is-the-difference-between-the-copy-and-add-commands-in-a-dockerfile) between the two.
