@@ -18,6 +18,8 @@ The target audience for this tutorial is anyone who loves or/and works in IT.
 * Terraform
 * Ansible
 * Vagrant
+* Docker
+* Docker Compose
 
 ## Results of completing the tutorial
 
