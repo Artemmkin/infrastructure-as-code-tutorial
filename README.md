@@ -38,4 +38,5 @@ This tutorial assumes you have access to the Google Cloud Platform. While GCP is
 * [Ansible](docs/06-ansible.md)
 * [Vagrant](docs/07-vagrant.md)
 * [Docker](docs/08-docker.md)
+* [Docker Compose](docs/09-docker-compose.md)
 * [What is Infrastructure as Code](docs/50-what-is-iac.md)
