@@ -172,7 +172,7 @@ Before we can run a deployment, we need to make some configuration changes to ho
 
 Let's define custom Ansible configuration for our directory. Create a file called `ansible.cfg` inside the `ansible` directory with the following content:
 
-```text
+```ini
 [defaults]
 inventory = ./hosts.yml
 private_key_file = ~/.ssh/raddit-user
