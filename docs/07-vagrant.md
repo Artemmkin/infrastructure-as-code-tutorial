@@ -244,6 +244,10 @@ The Ruby package should be present and the application should run without proble
 
 Recreating a new dev environment was easy, took very little time and it didn't affect our host OS. That's exactly what we needed.
 
+## Save and commit the work
+
+Save and commit the Vagrantfile created in this lab into your `iac-tutorial` repo.
+
 ## Conclusion
 
 Vagrant was able to meet our requirements for dev environments. It makes creating/recreating and configuring a dev environment easy and safe for our host operating system.
@@ -256,4 +260,4 @@ Destroy the VM:
 $ vagrant destroy -f
 ```
 
-Next: [What is Infrastructure as Code](50-what-is-iac.md)
+Next: [Docker](08-docker.md)
