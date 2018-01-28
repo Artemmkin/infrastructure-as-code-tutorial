@@ -2,7 +2,7 @@
 
 Scripts helped us speed up the process of system configuration, made it more reliable compared to doing everything manually, but there are still ways for improvement.
 
-In this lab, we're going to take a look at the first IaC tool called [Packer](https://www.packer.io/) and see how it can help us improve our operations.
+In this lab, we're going to take a look at the first IaC tool in this tutorial called [Packer](https://www.packer.io/) and see how it can help us improve our operations.
 
 ## Intro
 
