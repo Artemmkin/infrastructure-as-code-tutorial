@@ -12,7 +12,7 @@ This is a lot of manual work and we only have 2 containers in our setup. Imagine
 
 To make the management of our local container infrastructure easier and more reliable, we need a tool that would allow us to describe the desired state of a local environment and then it would create it from our description.
 
-`Docker Compose` is exactly the tool need for Docker containers. Let's see how we can use it.
+**Docker Compose** is exactly the tool we need. Let's see how we can use it.
 
 ## Install Docker Compose
 
@@ -80,7 +80,7 @@ $ docker run --name mongo-database \
     --detach mongo:3.2
 ```
 
-So the syntax of Docker Compose can be easily understood for a person not even familiar with it [the documentation](https://docs.docker.com/compose/compose-file/#service-configuration-reference).
+So the syntax of Docker Compose can be easily understood by a person not even familiar with it [the documentation](https://docs.docker.com/compose/compose-file/#service-configuration-reference).
 
 `raddit-app` services configuration is a bit different from MongoDB service in a way that we specify a `build` option instead of `image` to build the container image from a Dockerfile before starting a container:
 
@@ -145,7 +145,7 @@ Save and commit the `docker-compose.yml` file created in this lab into your `iac
 
 In this lab, we learned how to use Docker Compose tool to implement Infrastructure as Code approach to managing a local container infrastructure. This helped us automate and document the process of creating all the necessary components for running our containerized application.
 
-If we keep created `docker-compose.yml` file in application repository, any of our colleagues can create the same container environment on any system with just one command. This makes Docker Compose a perfect tool for creating local dev environments and simple application deployments.
+If we keep created `docker-compose.yml` file inside the application repository, any of our colleagues can create the same container environment on any system with just one command. This makes Docker Compose a perfect tool for creating local dev environments and simple application deployments.
 
 To destroy the local playground, run the following command:
 
