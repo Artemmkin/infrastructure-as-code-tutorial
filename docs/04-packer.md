@@ -111,7 +111,7 @@ $ packer build ./packer/raddit-base-image.json
 
 ## Launch a VM with your custom built machine image
 
-Start a VM using created image as a boot disk:
+Once the image is built, use it as a boot disk to start a VM:
 
 ```bash
 $ gcloud compute instances create raddit-instance-4 \
