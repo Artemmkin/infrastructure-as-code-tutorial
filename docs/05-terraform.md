@@ -91,7 +91,7 @@ This means that Terraform has a pluggable architecture and the pluggable compone
 
 So before we can actually create a VM using Terraform, we need to define a configuration of a [google cloud provider](https://www.terraform.io/docs/providers/google/index.html) and download it on our system.
 
-Create another file inside `terraform` folder and call it `providers.tf`. Put provider configuration in it (make sure to change the project ID):
+Create another file inside `terraform` folder and call it `providers.tf`. Put provider configuration in it:
 
 ```
 provider "google" {
@@ -99,6 +99,12 @@ provider "google" {
   project = "infrastructure-as-code"
   region  = "europe-west1"
 }
+```
+
+Make sure to change the `project` value in provider's configuration above to your project's ID. You can get your default project's ID by running the command:
+
+```bash
+$ gcloud config list project
 ```
 
 Now run the `init` command inside `terraform` directory to download the provider:
