@@ -1,6 +1,7 @@
 # Infrastructure As Code Tutorial
 
 [![GitHub contributors](https://img.shields.io/github/contributors/Artemmkin/infrastructure-as-code-tutorial.svg)](https://github.com/Artemmkin/infrastructure-as-code-tutorial/graphs/contributors)
+[![license](https://img.shields.io/github/license/Artemmkin/infrastructure-as-code-tutorial.svg)](https://github.com/Artemmkin/infrastructure-as-code-tutorial/blob/master/LICENSE)
 
 This tutorial is intended to show what the **Infrastructure as Code** (**IaC**) is, why we need it, and how it can help you manage your infrastructure more efficiently.
 
