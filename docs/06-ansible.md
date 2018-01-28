@@ -202,6 +202,8 @@ There's a whole lot to learn about Ansible. Try playing around with it more and 
 
 You can find an example of `configuration.yml` playbook [here](https://github.com/Artemmkin/infrastructure-as-code-example/blob/master/ansible/configuration.yml).
 
+And [here](https://github.com/Artemmkin/infrastructure-as-code-example/blob/master/packer/raddit-base-image-ansible.json) is an example of a Packer template which uses ansible provisioner.
+
 ## Save and commit the work
 
 Save and commit the `ansible` folder created in this lab into your `iac-tutorial` repo.
