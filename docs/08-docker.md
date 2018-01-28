@@ -74,7 +74,7 @@ We first choose an image that already contains Ruby of required version:
 FROM ruby:2.3
 ```
 
-The base image is downloaded from Docker official registry (storage of images) called [DockerHub](https://hub.docker.com/)
+The base image is downloaded from Docker official registry (storage of images) called [Docker Hub](https://hub.docker.com/).
 
 We then install required system packages and application dependencies:
 
@@ -189,9 +189,7 @@ Save and commit the `Dockerfile` created in this lab into your `iac-tutorial` re
 
 ## Conclusion
 
-In this lab, your adopted containers for running your application. This is a different type of technology from what we used to deal with in the previous labs.
-
-Nevertheless, we use Infrastructure as Code approach here, too.
+In this lab, you adopted containers for running your application. This is a different type of technology from what we used to deal with in the previous labs. Nevertheless, we use Infrastructure as Code approach here, too.
 
 We describe the configuration of our container image in a Dockerfile using Dockerfile's syntax. We then save that Dockefile in our application repository. This way we can build the application image consistently across any environments.
 
