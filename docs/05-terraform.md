@@ -162,11 +162,11 @@ Open another terminal and run the following command to get a public IP of the VM
 $ gcloud --format="value(networkInterfaces[0].accessConfigs[0].natIP)" compute instances describe raddit-instance
 ```
 
-## Import other GCP resources into Terraform
+## Add other GCP resources into Terraform
 
 Do you remember how in previous labs we created some GCP resources like SSH project keys and a firewall rule for our application via `gcloud` tool?
 
-Let's import those into Terraform so that we know for sure those resources are present.
+Let's add those into our Terraform configuration so that we know for sure those resources are present.
 
 First, delete the SSH project key and firewall rule:
 
@@ -182,7 +182,7 @@ Then add appropriate resources into `main.tf` file. Your final version of `main.
 ```
 resource "google_compute_project_metadata" "raddit" {
   metadata {
-    sshKeys = "raddit-user:${file("~/.ssh/raddit-user.pub")}" // path to ssh key file
+    ssh-keys = "raddit-user:${file("~/.ssh/raddit-user.pub")}" // path to ssh key file
   }
 }
 
