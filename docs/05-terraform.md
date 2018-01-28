@@ -34,9 +34,7 @@ So we see here 2 clear problems:
 * we don't know the current state of our infrastructure
 * we can't control the changes
 
-You should already know that the second problem is dealt by source control tools like `git`.
-
-The second one is solved by using tools like Terraform. Let's find out how.
+The second problem is dealt by source control tools like `git`, while the first one is solved by using tools like Terraform. Let's find out how.
 
 ## Install Terraform
 
