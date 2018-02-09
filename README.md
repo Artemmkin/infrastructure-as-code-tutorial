@@ -35,7 +35,7 @@ NOTE: you can use this [example repository](https://github.com/Artemmkin/infrast
 This tutorial assumes you have access to the Google Cloud Platform. While GCP is used for basic infrastructure requirements the lessons learned in this tutorial can be applied to other platforms.
 
 * [Introduction](docs/00-introduction.md)
-* [Prerequisits](docs/01-prerequisites.md)
+* [Prerequisites](docs/01-prerequisites.md)
 * [Manual Operations](docs/02-manual-operations.md)
 * [Scripts](docs/03-scripts.md)
 * [Packer](docs/04-packer.md)
