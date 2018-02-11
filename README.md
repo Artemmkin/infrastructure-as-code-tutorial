@@ -1,7 +1,7 @@
 # Infrastructure As Code Tutorial
 
 [![license](https://img.shields.io/github/license/Artemmkin/infrastructure-as-code-tutorial.svg)](https://github.com/Artemmkin/infrastructure-as-code-tutorial/blob/master/LICENSE)
-[![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social)](https://twitter.com/intent/tweet?text=Learn%20about%20Infrastructure%20as%20Code%20https%3A%2F%2Fgithub.com%2FArtemmkin%2Finfrastructure-as-code-tutorial%20%20Tutorial%20created%20by%20@artemmkins%20covers%20%23Packer,%20%23Terraform,%20%23Ansible,%20%23Vagrant,%20and%20%23Docker.%20%23DevOps)
+[![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social)](https://twitter.com/intent/tweet?text=Learn%20about%20Infrastructure%20as%20Code%20https%3A%2F%2Fgithub.com%2FArtemmkin%2Finfrastructure-as-code-tutorial%20%20Tutorial%20created%20by%20@artemmkins%20covers%20%23Packer,%20%23Terraform,%20%23Ansible,%20%23Vagrant,%20%23Docker,%20and%20%23Kubernetes.%20%23DevOps)
 
 This tutorial is intended to show what the **Infrastructure as Code** (**IaC**) is, why we need it, and how it can help you manage your infrastructure more efficiently.
 
