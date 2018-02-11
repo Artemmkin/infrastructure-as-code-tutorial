@@ -153,4 +153,4 @@ To destroy the local playground, run the following command:
 $ docker-compose down
 ```
 
-Next: [What is Infrastructure as Code](50-what-is-iac.md)
+Next: [Kubernetes](10-kubernetes.md)

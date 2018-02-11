@@ -23,6 +23,7 @@ The target audience for this tutorial is anyone who loves or/and works in IT.
 * Vagrant
 * Docker
 * Docker Compose
+* Kubernetes
 
 ## Results of completing the tutorial
 
@@ -44,4 +45,5 @@ This tutorial assumes you have access to the Google Cloud Platform. While GCP is
 * [Vagrant](docs/07-vagrant.md)
 * [Docker](docs/08-docker.md)
 * [Docker Compose](docs/09-docker-compose.md)
+* [Kubernetes](docs/10-kubernetes.md)
 * [What is Infrastructure as Code](docs/50-what-is-iac.md)
