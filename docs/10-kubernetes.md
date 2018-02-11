@@ -189,6 +189,7 @@ In the Pod object definition (`Pod template`) we specify container information s
         - name: DATABASE_HOST
           value: mongo-service
 ```
+
 Notice how we also pass an environment variable to the container. `DATABASE_HOST` variable tells our application how to contact the database. We define `mongo-service` as its value to specify the name of the Kubernetes service to contact (more about the Services will be in the next section).
 
 Container images will be downloaded from Docker Hub in this case.
@@ -198,7 +199,7 @@ Container images will be downloaded from Docker Hub in this case.
 Run a kubectl command to create Deployment objects inside your Kubernetes cluster (make sure to provide the correct path to the manifest file):
 
 ```bash
-$ kubectl create -f manifests/deployments.yaml
+$ kubectl apply -f manifests/deployments.yaml
 ```
 
 Check the deployments and pods that have been created:
@@ -216,7 +217,7 @@ This arises questions such as: How do we load balance between all of these appli
 
 These questions are addressed by the **Service** object in Kubernetes. A Service is an abstraction which you can use to logically group containers (Pods) running in you cluster, that all provide the same functionality.
 
-When a Service object is created, it is assigned a unique IP address (a single entry point for our application). Other Pods can then be configured to talk to the Service, and the Service will load balance the requests to containers (Pods) that are members of that Service.
+When a Service object is created, it is assigned a unique IP address called `clusterIP` (a single entry point for our application). Other Pods can then be configured to talk to the Service, and the Service will load balance the requests to containers (Pods) that are members of that Service.
 
 We'll create a Service for each of our applications, i.e. `raddit` and `MondoDB`. Create a file called `services.yaml` inside `kubernetes/manifests` directory with the following content:
 
@@ -233,6 +234,7 @@ spec:
   - protocol: TCP
     port: 9292
     targetPort: 9292
+    nodePort: 30100
 ---
 apiVersion: v1
 kind: Service
@@ -259,23 +261,24 @@ spec:
 
 This type of Service makes the Service accessible on each Node’s IP at a static port (NodePort). We use this type to be able to contact the `raddit` application later from outside the cluster.
 
-`selector` field is used to identify a set of Pods to which to route requests that the Service receives. In this case, Pods that have a label `app=raddit` will become part of this Service.
+`selector` field is used to identify a set of Pods to which to route packets that the Service receives. In this case, Pods that have a label `app=raddit` will become part of this Service.
 
 ```yaml
   selector:
     app: raddit
 ```
 
-The `ports` section specifies the port mapping between a Service and Pods that are part of this Service.
+The `ports` section specifies the port mapping between a Service and Pods that are part of this Service and also contains definition of a node port number (`nodePort`) which we will use to reach the Service from outside the cluster.
 
 ```yaml
   ports:
   - protocol: TCP
     port: 9292
     targetPort: 9292
+    nodePort: 30100
 ```
 
-The requests that come to the Service's IP address on the specified `port` will be routed to the `targetPort` on Pods that are part of this Service.
+The requests that come to any of your cluster nodes' public IP addresses on the specified `nodePort` will be routed to the `raddit` Service cluster-internal IP address. The Service, which is listening on port 9292 (`port`) and is accessible within the cluster on this port, will then route the packets to the `targetPort` on one of the Pods which is part of this Service.
 
 `mongo` Service is only different in its type. `ClusterIP` type of Service will make the Service accessible on the cluster-internal IP, so you won't be able to reach it from outside the cluster.
 
@@ -284,7 +287,7 @@ The requests that come to the Service's IP address on the specified `port` will 
 Run a kubectl command to create Service objects inside your Kubernetes cluster (make sure to provide the correct path to the manifest file):
 
 ```bash
-$ kubectl create -f manifests/services.yaml
+$ kubectl apply -f manifests/services.yaml
 ```
 
 Check that the services have been created:
@@ -295,28 +298,15 @@ $ kubectl get svc
 
 ## Access Application
 
-Because we used `NodePort` type of service for the `raddit` service, our application should accessible to us on the IP address of any of the cluster nodes.
+Because we used `NodePort` type of service for the `raddit` service, our application should accessible to us on the IP address of any of our cluster nodes.
 
-Get a list of IP addresses of cluster hosts:
+Get a list of IP addresses of your cluster nodes:
 
 ```bash
 $ gcloud --format="value(networkInterfaces[0].accessConfigs[0].natIP)" compute instances list --filter="tags.items=iac-kubernetes"
 ```
 
-Get a NodePort which your cluster nodes use to proxy requests to the `raddit` service:
-
-```bash
-$ kubectl describe svc raddit-service | grep NodePort
-```
-
-Use any of your nodes public IPs and the NodePort to access the application in your browser.
-
-For example, if I got a list of IP addresses like this:
-```
-1.1.1.1
-2.2.2.2
-```
-and the NodePort is 31545, then I can access my application by either 1.1.1.1:31545 or 2.2.2.2:31545.
+Use any of your nodes public IP addresses and the node port `30100` which we specified in the service object definition to reach the `raddit` application in your browser.
 
 ## Save and commit the work
 
