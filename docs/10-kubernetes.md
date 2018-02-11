@@ -79,7 +79,7 @@ $ terraform init
 $ terraform apply
 ```
 
-Wait until Terraform finish creation of the cluster. It can take about 3-5 minutes.
+Wait until Terraform finishes creation of the cluster. It can take about 3-5 minutes.
 
 Check that the cluster is running and `kubectl` is properly configured to communicate with it by fetching cluster information:
 
