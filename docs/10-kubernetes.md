@@ -1,6 +1,6 @@
 ## Kubernetes
 
-In the previous labs, we learned how to run Docker containers locally. Running containers at scale is quite different and a special class of tools, known as **orchestrators**, was created for that task.
+In the previous labs, we learned how to run Docker containers locally. Running containers at scale is quite different and a special class of tools, known as **orchestrators**, is used for that task.
 
 In this lab, we'll take a look at the most popular Open Source orchestration platform called [Kubernets](https://kubernetes.io/) and see how it implements Infrastructure as Code model.
 
@@ -30,7 +30,7 @@ You can install `kubectl` onto your system as part of Google Cloud SDK by runnin
 $ gcloud components install kubectl
 ```
 
-Check the version of kubectl to make sure it is:
+Check the version of kubectl to make sure it is installed:
 
 ```bash
 $ kubectl version
@@ -50,16 +50,17 @@ Create a directory named `terraform` inside `kubernetes` directory. Download a b
 
 ```bash
 $ wget https://github.com/Artemmkin/gke-terraform/raw/master/gke-terraform.zip
-$ unzip gke-terraform.zip -d kubernetes/terraform && rm gke-terraform.zip
+$ unzip gke-terraform.zip -d kubernetes/terraform
+$ rm gke-terraform.zip
 ```
 
 We'll use this Terraform code to create a Kubernetes cluster.
 
 ## Create Kubernetes Cluster
 
-`main.tf` which you downloaded holds all the information about the cluster that should be created. It's parameterized using Terraform input variables which allow you to easily change configuration parameters.
+`main.tf` which you downloaded holds all the information about the cluster that should be created. It's parameterized using Terraform [input variables](https://www.terraform.io/intro/getting-started/variables.html) which allow you to easily change configuration parameters.
 
-Look into `terraform.tfvars` file which contains definitions of the variables and change them if necessary. You'll most probably want to change `project_id` value.
+Look into `terraform.tfvars` file which contains definitions of the input variables and change them if necessary. You'll most probably want to change `project_id` value.
 
 ```
 // define provider configuration variables
@@ -149,31 +150,31 @@ spec:
         image: mongo:3.2
 ```
 
-In this file we describe two `Deployment objects` which represent what application containers and in what quantity should be run. The Deployment objects have the same structure so I'll briefly go over only one of them.
+In this file we describe two `Deployment objects` which define what application containers and in what quantity should be run. The Deployment objects have the same structure so I'll briefly go over only one of them.
 
 Each Kubernetes object has 4 required fields:
 * `apiVersion` - Which version of the Kubernetes API you’re using to create this object. You'll need to change that if you're using Kubernetes API version different than 1.7 as in this example.
 * `kind` - What kind of object you want to create. In this case we create a Deployment object.
 * `metadata` - Data that helps uniquely identify the object. In this example, we give the deployment object a name according to the name of an application it's used to run.
-* `spec` - describes the `desired state` for the object
+* `spec` - describes the `desired state` for the object. `Spec` configuration will differ from object to object, because different objects are used for different purposes.
 
-`Spec` configuration will differ from object to object, because different objects are used for different purposes. In the Deployment object's spec we specify, how many `replicas` (instances of the same application) we want to run and what those applications are (`selector`)
+In the Deployment object's spec we specify, how many `replicas` (instances of the same application) we want to run and what those applications are (`selector`)
 
 ```yml
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
       app: raddit
 ```
 
-In our case, we specify that we want to be running 2 instances of applications that have a label `raddit`. **Labels** are used to define identifying attributes of Kubernetes objects and can be used by **label selectors** for objects selection.
+In our case, we specify that we want to be running 2 instances of applications that have a label `app=raddit`. **Labels** are used to give identifying attributes to Kubernetes objects and can be then used by **label selectors** for objects selection.
 
 We also specify a `Pod template` in the spec configuration. **Pods** are lower level objects than Deployments and are used to run only `a single instance of application`. In most cases, Pod is equal to a container, although you can run multiple containers in a single Pod.
 
-The `Pod template` which we use is a Pod object's definition nested inside the deployment object. It has the required object fields such as `metadata` and `spec`, but it doesn't have `apiVersion` and `kind` fields as those would be redundant in this case. When we create a Deployment object, the Pod object(s) will be created as well. The number of Pods will be equal to the number of `replicas` specified.
+The `Pod template` which we use is a Pod object's definition nested inside the Deployment object. It has the required object fields such as `metadata` and `spec`, but it doesn't have `apiVersion` and `kind` fields as those would be redundant in this case. When we create a Deployment object, the Pod object(s) will be created as well. The number of Pods will be equal to the number of `replicas` specified. The Deployment object ensures that the right number of Pods (`replicas`) is always running.
 
-In the Pod object definition (`Pod template`) we specify container information such as a container image name, a container name, which is used by Kubernetes to run the application. We also add labels to identify what application this Pod object is used to run, this label value is then used by the `selector` field in the deployment object to select the right Pod object.
+In the Pod object definition (`Pod template`) we specify container information such as a container image name, a container name, which is used by Kubernetes to run the application. We also add labels to identify what application this Pod object is used to run, this label value is then used by the `selector` field in the Deployment object to select the right Pod object.
 
 ```yaml
   template:
@@ -209,7 +210,9 @@ $ kubectl get pods
 
 ## Service manifests
 
-Running applications at scale means running _multiple containers spread across multiple VMs_. This arises questions such as: How do we load balance between all of these application containers? How do we provide a single entry point for the application so that we could connect to it via that entry point instead of connecting to a particular container?
+Running applications at scale means running _multiple containers spread across multiple VMs_.
+
+This arises questions such as: How do we load balance between all of these application containers? How do we provide a single entry point for the application so that we could connect to it via that entry point instead of connecting to a particular container?
 
 These questions are addressed by the **Service** object in Kubernetes. A Service is an abstraction which you can use to logically group containers (Pods) running in you cluster, that all provide the same functionality.
 
@@ -245,16 +248,16 @@ spec:
     targetPort: 27017
 ```
 
-In this manifest, we describe 2 service objects of different types. You should be already familiar with the general object structure, so I'll just go over the `spec` field which defines the desired state of the object.
+In this manifest, we describe 2 Service objects of different types. You should be already familiar with the general object structure, so I'll just go over the `spec` field which defines the desired state of the object.
 
-The `raddit` service has a NodePort type:
+The `raddit` Service has a NodePort type:
 
 ```yaml
 spec:
   type: NodePort
 ```
 
-This type of service makes the service accessible on each Node’s IP at a static port (NodePort). We use this type to be able to contact the `raddit` application later from outside the cluster.
+This type of Service makes the Service accessible on each Node’s IP at a static port (NodePort). We use this type to be able to contact the `raddit` application later from outside the cluster.
 
 `selector` field is used to identify a set of Pods to which to route requests that the Service receives. In this case, Pods that have a label `app=raddit` will become part of this Service.
 
@@ -274,11 +277,11 @@ The `ports` section specifies the port mapping between a Service and Pods that a
 
 The requests that come to the Service's IP address on the specified `port` will be routed to the `targetPort` on Pods that are part of this Service.
 
-`mongo` service is only different in its type. `ClusterIP` type of service will make the service accessible on the cluster-internal IP, so you won't be able to reach it from outside the cluster.
+`mongo` Service is only different in its type. `ClusterIP` type of Service will make the Service accessible on the cluster-internal IP, so you won't be able to reach it from outside the cluster.
 
 ## Create Service Objects
 
-Run a kubectl command to create Deployment objects inside your Kubernetes cluster (make sure to provide the correct path to the manifest file):
+Run a kubectl command to create Service objects inside your Kubernetes cluster (make sure to provide the correct path to the manifest file):
 
 ```bash
 $ kubectl create -f manifests/services.yaml
