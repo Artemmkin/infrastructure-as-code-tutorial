@@ -150,7 +150,7 @@ If we keep created `docker-compose.yml` file inside the application repository, 
 To destroy the local playground, run the following command:
 
 ```bash
-$ docker-compose down
+$ docker-compose down --volumes
 ```
 
 Next: [Kubernetes](10-kubernetes.md)
