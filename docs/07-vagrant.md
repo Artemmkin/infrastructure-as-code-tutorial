@@ -14,7 +14,7 @@ There are a few reasons why you don't want to do that:
 
 * `This can break your system`. When you change your system configuration there are lot of things that can go wrong. For example, when installing/removing different packages you can easily mess up the work of your system's package manager.
 * `When something breaks in your system configuration, it can take a long time to fix`. If you've messed up with you local system configuration, you either need to debug or reinstall your OS. Both of these can take a lot of your time and should be avoided.
-* `You have no idea what is your development environment actually looks like`. Your local OS will certainly have its own specific configuration and packages installed, because you use it for every day tasks different than just running your application. For this reason, even if your application works on your local machine, you cannot describe exactly what is required for it to run. This is commonly known as `works on my machine` problem and is often one of the reasons for a conflict between Dev and Ops.
+* `You have no idea what is your development environment actually looks like`. Your local OS will certainly have its own specific configuration and packages installed, because you use it for every day tasks different than just running your application. For this reason, even if your application works on your local machine, you cannot describe exactly what is required for it to run. This is commonly known as the `works on my machine` problem and is often one of the reasons for a conflict between Dev and Ops.
 
 Based on these problems, let's draw some requirements for our local dev environment:
 
@@ -151,6 +151,13 @@ end
 ```
 
 In the previous lab, it was given to you as a task to create a `configuration.yml` playbook that provides the same functionality as `configuration.sh` script we had used before. If you did not do that, you can copy the playbook from [here](https://github.com/Artemmkin/infrastructure-as-code-example/blob/master/ansible/configuration.yml) (place it inside `ansible` directory). If you did create your own playbook, make sure you have a `pre_tasks` section as in [this example](https://github.com/Artemmkin/infrastructure-as-code-example/blob/master/ansible/configuration.yml).
+
+If you see a failure similar to the one below while Vagrant is running the Ansible playbook, ensure you copy the configuration.yaml file as linked above -- if you do not the VM Vagrant creates will not have Python 2.7 installed which will cause Ansible to fail (this is what the `pre_tasks` section is for!).
+
+```bash
+TASK [Install Ruby] ************************************************************
+failed: [raddit-app] (item=[u'ruby-full', u'build-essential']) => {"changed": false, "item": ["ruby-full", "build-essential"], "module_stderr": "Shared connection to 127.0.0.1 closed.\r\n", "module_stdout": "/bin/sh: 1: /usr/bin/python: not found\r\n", "msg": "MODULE FAILURE", "rc": 0}
+```
 
 Note, that we also added a port forwarding rule for accessing our application and instructed Vagrant to sync a local folder with application code to a specified VM folder (`/srv/raddit-app`):
 

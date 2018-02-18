@@ -4,13 +4,13 @@ In the previous lab, you deployed the [raddit](https://github.com/Artemmkin/radd
 
 ## Intro
 
-Now think about what happens if your application becomes so popular that one virtual machine can't handle all the load of incoming requests. Or what happens when your application somehow crushes? Debugging a problem can take a long time and it would most likely be much faster to launch and configure a new VM than trying to fix what's broken.
+Now think about what happens if your application becomes so popular that one virtual machine can't handle all the load of incoming requests. Or what happens when your application somehow crashes? Debugging a problem can take a long time and it would most likely be much faster to launch and configure a new VM than trying to fix what's broken.
 
 In all of these cases we face the task of provisioning new virtual machines, installing the required software and repeating all of the configurations we've made in the previous lab over and over again.
 
 Doing it manually is `boring`, `error-prone` and `time-consuming`.
 
-The most obvious way for improvement is using Bash scripts which allow to run sets of commands put in a single file. So let's try this.
+The most obvious way for improvement is using Bash scripts which allow us to run sets of commands put in a single file. So let's try this.
 
 ## Provision Compute Resources
 
@@ -147,7 +147,7 @@ It's also a first step we've made in the direction of automating operations work
 
 But scripts are not suitable for every operations task and have many downsides. We'll discuss more on that in the next labs.
 
-Destroy the current VM and before moving onto the next step:
+Destroy the current VM before moving onto the next step:
 
 ```bash
 $ gcloud compute instances delete raddit-instance-3

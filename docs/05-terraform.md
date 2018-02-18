@@ -8,7 +8,7 @@ In this lab, we're going to learn about another IaC tool by HashiCorp called [Te
 
 Think about your current operations...
 
-Do you see any problems you may have or any ways for improvement?
+Do you see any problems you may have, or any ways for improvement?
 
 Remember, that each time we want to deploy an application, we have to `provision` compute resources first, that is to start a new VM.
 
@@ -25,9 +25,9 @@ At this stage, it doesn't seem like there are any problems with this. But, in fa
 
 Infrastructure for running your services and applications could be huge. You might have tens, hundreds or even thousands of virtual machines, hundreds of firewall rules, multiples VPC networks, and load balancers. In addition to that, the infrastructure could be split between multiple teams and managed separately. Such infrastructure looks very complex and yet should be run and managed in a consistent and predictable way.
 
-If we create and change infrastructure components using gcloud tool or Web UI Console, over time we won't be able to describe exactly in which `state` our infrastructure is in right now, meaning `we lose control over it`.
+If we create and change infrastructure components using gcloud CLI tool or Web UI Console, over time we won't be able to describe exactly in which `state` our infrastructure is in right now, meaning `we lose control over it`.
 
-This happens because you tend to forget what changes you've made a few months ago and why you did it. If multiple people are managing infrastructure, this makes look things even worse, because you can't know what changes other people are making even though your communication inside the team could be great.
+This happens because you tend to forget what changes you've made a few months ago and why you did it. If multiple people are managing infrastructure, this makes things even worse, because you can't know what changes other people are making even though your communication inside the team could be great.
 
 So we see here 2 clear problems:
 
@@ -46,6 +46,8 @@ Make sure Terraform version is  => 0.11.0:
 $ terraform -v
 ```
 
+Note: If you see an error here, you may need to add Terraform to your PATH as we did with Packer.
+
 ## Infrastructure as Code project
 
 Create a new directory called `terraform` inside your `iac-tutorial` repo, which we'll use to save the work done in this lab.
@@ -54,7 +56,7 @@ Create a new directory called `terraform` inside your `iac-tutorial` repo, which
 
 _Terraform allows you to describe the desired state of your infrastructure and makes sure your desired state meets the actual state._
 
-Terraform uses **resources** to describe different infrastructure components. If you want to manage with Terraform some infrastructure component, you should first make sure there is a resource for that component for that particular platform.
+Terraform uses **resources** to describe different infrastructure components. If you want to use Terraform to manage some infrastructure component, you should first make sure there is a resource for that component for that particular platform.
 
 Let's use Terraform syntax to describe a VM instance that we want to be running.
 
@@ -91,7 +93,7 @@ This means that Terraform has a pluggable architecture and the pluggable compone
 
 So before we can actually create a VM using Terraform, we need to define a configuration of a [google cloud provider](https://www.terraform.io/docs/providers/google/index.html) and download it on our system.
 
-Create another file inside `terraform` folder and call it `providers.tf`. Put provider configuration in it:
+Create another file inside `terraform` folder and call it `providers.tf`. Put provider configuration in it (make sure you are setting the region as appropriate):
 
 ```
 provider "google" {
