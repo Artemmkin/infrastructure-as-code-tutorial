@@ -101,7 +101,7 @@ provider "google" {
 }
 ```
 
-Note the region value, this is where terraform will provision resources (you may wish to change it).
+Note the `region` value, this is where terraform will provision resources (you may wish to change it).
 
 Make sure to change the `project` value in provider's configuration above to your project's ID. You can get your default project's ID by running the command:
 
