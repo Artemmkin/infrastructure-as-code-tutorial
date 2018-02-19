@@ -46,8 +46,6 @@ Make sure Terraform version is  => 0.11.0:
 $ terraform -v
 ```
 
-Note: If you see an error here, you may need to add Terraform to your PATH as we did with Packer.
-
 ## Infrastructure as Code project
 
 Create a new directory called `terraform` inside your `iac-tutorial` repo, which we'll use to save the work done in this lab.
@@ -93,7 +91,7 @@ This means that Terraform has a pluggable architecture and the pluggable compone
 
 So before we can actually create a VM using Terraform, we need to define a configuration of a [google cloud provider](https://www.terraform.io/docs/providers/google/index.html) and download it on our system.
 
-Create another file inside `terraform` folder and call it `providers.tf`. Put provider configuration in it (make sure you are setting the region as appropriate):
+Create another file inside `terraform` folder and call it `providers.tf`. Put provider configuration in it:
 
 ```
 provider "google" {
@@ -102,6 +100,8 @@ provider "google" {
   region  = "europe-west1"
 }
 ```
+
+Note the region value, this is where terraform will provision resources (you may wish to change it).
 
 Make sure to change the `project` value in provider's configuration above to your project's ID. You can get your default project's ID by running the command:
 

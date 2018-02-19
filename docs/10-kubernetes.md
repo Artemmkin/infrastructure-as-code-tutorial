@@ -54,12 +54,6 @@ $ unzip gke-terraform.zip -d kubernetes/terraform
 $ rm gke-terraform.zip
 ```
 
-Note: If you are using MacOS High Sierra or newer you may have to install wget, you can do so via Homebrew (https://stackoverflow.com/questions/33886917/how-to-install-wget-in-macos-capitan-sierra/43291137).
-
-```bash
-$ brew install wget --with-libressl
-```
-
 We'll use this Terraform code to create a Kubernetes cluster.
 
 ## Create Kubernetes Cluster

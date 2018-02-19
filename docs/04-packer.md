@@ -22,20 +22,6 @@ Check the version to verify that it was installed:
 $ packer -v
 ```
 
-Note: If you see an error similar to the following you may need to add Packer to your PATH:
-
-```bash
-$ packer -v
--bash: packer: command not found
-```
-
-To add Packer to your PATH you will need to modify your shell profile to include the Packer UNIX executable file. In MacOS you can edit the `~/.bash_profile` file to include Packer by adding the following (your system may vary, this example was used on MacOS 10.13):
-
-```bash
-# Packer
-export PATH="/usr/local/packer/:$PATH"
-```
-
 ## Infrastructure as Code project
 
 Create a new directory called `packer` inside your `iac-tutorial` repo, which we'll use to save the work done in this lab.
