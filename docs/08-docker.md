@@ -4,14 +4,14 @@ In this lab, we will talk about managing containers for the first time in this t
 
 ## Intro
 
-Remember when we talked about packer, we mentioned a few words about `Immutable Infrastructure` model? Its idea was to package all application dependencies and application itself inside a machine image, so that we don't have to configure the system after start. Containers implement the same model, but they do it in a more efficient way.
+Remember when we talked about packer, we mentioned a few words about `Immutable Infrastructure` model? The idea was to package all application dependencies and application itself inside a machine image, so that we don't have to configure the system after start. Containers implement the same model, but they do it in a more efficient way.
 
 Containers allow you to create self-contained isolated environments for running your applications.
 
 They have some significant advantages over VMs in terms of implementing Immutable Infrastructure model:
 
 * `Containers are much faster to start than VMs.` Container starts in seconds, while a VM takes minutes. It's important when you're doing an update/rollback or scaling your service.
-* `Containers enable better utilization of compute resources.` Very often computer resources of a VM running an application underutilized. Launching multiple instances of the same application on one VM has a lot of difficulties: different application versions may need different versions of dependent libraries, init scripts require special configuration. With containers, running multiple instances of the same application on the same machine is easy and doesn't require any system configuration.
+* `Containers enable better utilization of compute resources.` Very often computer resources of a VM running an application are underutilized. Launching multiple instances of the same application on one VM has a lot of difficulties: different application versions may need different versions of dependent libraries, init scripts require special configuration. With containers, running multiple instances of the same application on the same machine is easy and doesn't require any system configuration.
 * `Containers are more lightweight than VMs.` Container images are much smaller than machine images, because they don't need a full operating system in order to run. In fact, a container image can include just a single binary and take just a few MBs of your disk space. This means that we need less space for storing the images and the process of distributing images goes faster.
 
 Let's try to implement `Immutable Infrastructure` model with Docker containers, while paying special attention to the `Dockerfile` part as a way to practice `Infrastructure as Code` approach.

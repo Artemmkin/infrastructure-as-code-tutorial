@@ -1,6 +1,6 @@
 # Packer
 
-Scripts helped us speed up the process of system configuration, made it more reliable compared to doing everything manually, but there are still ways for improvement.
+Scripts helped us speed up the process of system configuration, and made it more reliable compared to doing everything manually, but there are still ways for improvement.
 
 In this lab, we're going to take a look at the first IaC tool in this tutorial called [Packer](https://www.packer.io/) and see how it can help us improve our operations.
 
@@ -8,7 +8,7 @@ In this lab, we're going to take a look at the first IaC tool in this tutorial c
 
 Remember how in the second lab we had to make sure that the `git` was installed on the VM so that we could clone the application repo? Did it surprise you in a good way that the `git` was already installed on the system and we could skip the installation?
 
-Imagine, how nice it would be to have other required packages like Ruby and Bundler to be preinstalled on the VM we provision or have necessary configuration files come with the image, too. This would require even less time and effort from us to configure the system and run our application.
+Imagine how nice it would be to have other required packages like Ruby and Bundler preinstalled on the VM we provision, or have necessary configuration files come with the image, too. This would require even less time and effort from us to configure the system and run our application.
 
 Luckily, we can create custom machine images with required configuration and software installed using Packer. Let's check it out.
 
@@ -103,7 +103,7 @@ $ packer validate ./packer/raddit-base-image.json
 
 ## Create custom machine image
 
-Build image for your application:
+Build the image for your application:
 
 ```bash
 $ packer build ./packer/raddit-base-image.json

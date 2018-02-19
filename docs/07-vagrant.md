@@ -14,7 +14,7 @@ There are a few reasons why you don't want to do that:
 
 * `This can break your system`. When you change your system configuration there are lot of things that can go wrong. For example, when installing/removing different packages you can easily mess up the work of your system's package manager.
 * `When something breaks in your system configuration, it can take a long time to fix`. If you've messed up with you local system configuration, you either need to debug or reinstall your OS. Both of these can take a lot of your time and should be avoided.
-* `You have no idea what is your development environment actually looks like`. Your local OS will certainly have its own specific configuration and packages installed, because you use it for every day tasks different than just running your application. For this reason, even if your application works on your local machine, you cannot describe exactly what is required for it to run. This is commonly known as `works on my machine` problem and is often one of the reasons for a conflict between Dev and Ops.
+* `You have no idea what is your development environment actually looks like`. Your local OS will certainly have its own specific configuration and packages installed, because you use it for every day tasks different than just running your application. For this reason, even if your application works on your local machine, you cannot describe exactly what is required for it to run. This is commonly known as the `works on my machine` problem and is often one of the reasons for a conflict between Dev and Ops.
 
 Based on these problems, let's draw some requirements for our local dev environment:
 

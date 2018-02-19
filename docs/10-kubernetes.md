@@ -1,6 +1,6 @@
 ## Kubernetes
 
-In the previous labs, we learned how to run Docker containers locally. Running containers at scale is quite different and a special class of tools, known as **orchestrators**, is used for that task.
+In the previous labs, we learned how to run Docker containers locally. Running containers at scale is quite different and a special class of tools, known as **orchestrators**, are used for that task.
 
 In this lab, we'll take a look at the most popular Open Source orchestration platform called [Kubernets](https://kubernetes.io/) and see how it implements Infrastructure as Code model.
 
@@ -172,7 +172,7 @@ In our case, we specify that we want to be running 2 instances of applications t
 
 We also specify a `Pod template` in the spec configuration. **Pods** are lower level objects than Deployments and are used to run only `a single instance of application`. In most cases, Pod is equal to a container, although you can run multiple containers in a single Pod.
 
-The `Pod template` which we use is a Pod object's definition nested inside the Deployment object. It has the required object fields such as `metadata` and `spec`, but it doesn't have `apiVersion` and `kind` fields as those would be redundant in this case. When we create a Deployment object, the Pod object(s) will be created as well. The number of Pods will be equal to the number of `replicas` specified. The Deployment object ensures that the right number of Pods (`replicas`) is always running.
+The `Pod template` which is a Pod object's definition nested inside the Deployment object. It has the required object fields such as `metadata` and `spec`, but it doesn't have `apiVersion` and `kind` fields as those would be redundant in this case. When we create a Deployment object, the Pod object(s) will be created as well. The number of Pods will be equal to the number of `replicas` specified. The Deployment object ensures that the right number of Pods (`replicas`) is always running.
 
 In the Pod object definition (`Pod template`) we specify container information such as a container image name, a container name, which is used by Kubernetes to run the application. We also add labels to identify what application this Pod object is used to run, this label value is then used by the `selector` field in the Deployment object to select the right Pod object.
 

@@ -26,7 +26,7 @@ $ docker-compose -v
 
 ## Describe Local Container Infrastructure
 
-Docker Compose could be compared to Terraform, but it manages only Docker container infrastructure. It allows to start containers, create networks and volumes, pass environment variables to containers, publish ports, etc.
+Docker Compose could be compared to Terraform, but it manages only Docker container infrastructure. It allows us to start containers, create networks and volumes, pass environment variables to containers, publish ports, etc.
 
 Let's use Docker Compose [declarative syntax](https://docs.docker.com/compose/compose-file/) to describe what our local container infrastructure should look like.
 
