@@ -2,7 +2,7 @@
 
 In the previous labs, we learned how to run Docker containers locally. Running containers at scale is quite different and a special class of tools, known as **orchestrators**, are used for that task.
 
-In this lab, we'll take a look at the most popular Open Source orchestration platform called [Kubernets](https://kubernetes.io/) and see how it implements Infrastructure as Code model.
+In this lab, we'll take a look at the most popular Open Source orchestration platform called [Kubernetes](https://kubernetes.io/) and see how it implements Infrastructure as Code model.
 
 ## Intro
 
