@@ -30,7 +30,7 @@ Create a new directory called `packer` inside your `iac-tutorial` repo, which we
 
 The way Packer works is simple. It starts a VM with specified characteristics, configures the operating system and installs the software you specify, and then it creates a machine image from that VM.
 
-The part of packer responsible for staring a VM and creating an image from it is called [builder](https://www.packer.io/docs/builders/index.html).
+The part of packer responsible for starting a VM and creating an image from it is called [builder](https://www.packer.io/docs/builders/index.html).
 
 So before using packer to create images, we need to define a builder configuration in a JSON file (which is called **template** in Packer terminology).
 
