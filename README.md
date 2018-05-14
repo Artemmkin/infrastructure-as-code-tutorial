@@ -46,4 +46,4 @@ This tutorial assumes you have access to the Google Cloud Platform. While GCP is
 * [Docker](docs/08-docker.md)
 * [Docker Compose](docs/09-docker-compose.md)
 * [Kubernetes](docs/10-kubernetes.md)
-* [What is Infrastructure as Code](docs/50-what-is-iac.md)
+* [What is Infrastructure as Code?](docs/50-what-is-iac.md)

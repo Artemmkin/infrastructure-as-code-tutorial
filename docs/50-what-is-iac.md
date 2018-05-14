@@ -1,4 +1,4 @@
-# What is Infrastructure as Code
+# What is Infrastructure as Code?
 
 You've come a long way going through all the labs and learning about different Infrastructure as Code tools. Some sort of presentation of what Infrastructure as Code is should already be shaped in your head.
 
