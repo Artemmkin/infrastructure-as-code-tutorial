@@ -64,7 +64,7 @@ git clone https://github.com/Artemmkin/raddit.git
 
 echo "  ----- install dependent gems -----  "
 cd ./raddit
-bundle install
+sudo bundle install
 
 echo "  ----- start the application -----  "
 sudo systemctl start raddit
@@ -91,6 +91,7 @@ Let's create a file called `deploy.yml` inside the `ansible` directory:
       register: clone
 
     - name: Install application dependencies
+      become: true
       bundler:
         state: present
         chdir: /home/raddit-user/raddit
@@ -123,6 +124,7 @@ The second task runs bundler in the specified directory:
 
 ```yaml
 - name: Install application dependencies
+  become: true
   bundler:
     state: present
     chdir: /home/raddit-user/raddit

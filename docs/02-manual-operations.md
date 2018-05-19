@@ -101,7 +101,7 @@ Install application dependencies using Bundler:
 
 ```bash
 $ cd ./raddit
-$ bundle install
+$ sudo bundle install
 ```
 
 ## Prepare Database
