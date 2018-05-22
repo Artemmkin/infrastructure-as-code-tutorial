@@ -191,7 +191,7 @@ Then connect to the VM to start application:
 ```bash
 $ vagrant ssh
 $ cd /srv/raddit-app
-$ bundle install
+$ sudo bundle install
 $ puma
 ```
 
@@ -236,7 +236,7 @@ Once a new VM is up and running, try to launch your app in it:
 $ vagrant ssh
 $ ruby -v
 $ cd /srv/raddit-app
-$ bundle install
+$ sudo bundle install
 $ puma
 ```
 
