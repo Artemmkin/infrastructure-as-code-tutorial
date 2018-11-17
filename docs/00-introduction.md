@@ -8,7 +8,7 @@ Then you realize that there is a small problem. You ask yourself a question: "Ho
 
 You're thinking that you can't run the application locally all the time, because your old laptop will become slow for other tasks and will probably crush if a lot of users will be using your app at the same time. Besides, your ISP changes randomly the public IP for your router, so you don't know on which IP address your application will be accessible to the public at any given moment.
 
-You start realizing that the problem you're facing is not as small as you thought. In fact, there is a whole a new craft for you to learn in IT world about running software applications and making sure they are always available to the users.
+You start realizing that the problem you're facing is not as small as you thought. In fact, there is a whole new craft for you to learn in IT world about running software applications and making sure they are always available to the users.
 
 The craft is called **IT operations**. And in almost every IT department, there is an operations (Ops) team who manages the platform where the applications are running.
 
