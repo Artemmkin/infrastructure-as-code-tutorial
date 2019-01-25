@@ -76,7 +76,7 @@ resource "google_compute_instance" "raddit" {
   # networks to attach to the VM
   network_interface {
     network = "default"
-    access_config {} // use ephemaral public IP
+    access_config {} // use ephemeral public IP
   }
 }
 ```
