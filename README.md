@@ -11,6 +11,8 @@ This tutorial is not meant to give a complete guide on how to use a specific too
 
 > The tutorial was inspired by [Kubernetes the Hard Way](https://github.com/kelseyhightower/kubernetes-the-hard-way) tutorial. I used it as an example to structure this one.
 
+_See [my presentation at DevOpsDays Silicon Valley](https://www.youtube.com/watch?v=XbcW2B7roLo&t=) in which I talk more in depth about the tutorial._
+
 ## Target Audience
 
 The target audience for this tutorial is anyone who loves or/and works in IT.
