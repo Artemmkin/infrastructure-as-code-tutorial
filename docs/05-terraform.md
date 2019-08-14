@@ -40,7 +40,7 @@ The second problem is dealt by source control tools like `git`, while the first 
 
 [Download](https://www.terraform.io/downloads.html) and install Terraform on your system.
 
-Make sure Terraform version is  => 0.11.0:
+Make sure Terraform version is  => 0.12.6:
 
 ```bash
 $ terraform -v
@@ -95,7 +95,7 @@ Create another file inside `terraform` folder and call it `providers.tf`. Put pr
 
 ```
 provider "google" {
-  version = "~> 1.4.0"
+  version = "~> 2.5"
   project = "infrastructure-as-code"
   region  = "europe-west1"
 }
@@ -202,7 +202,7 @@ resource "google_compute_instance" "raddit" {
 }
 
 resource "google_compute_project_metadata" "raddit" {
-  metadata {
+  metadata = {
     ssh-keys = "raddit-user:${file("~/.ssh/raddit-user.pub")}" // path to ssh key file
   }
 }
