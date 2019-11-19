@@ -196,7 +196,7 @@ $ ansible-playbook deploy.yml
 
 ## Access Application
 
-Access the applicaion in your browser by its public IP (don't forget to specify the port 9292) and make sure application has been deployed and is functional.
+Access the application in your browser by its public IP (don't forget to specify the port 9292) and make sure application has been deployed and is functional.
 
 ## Futher Learning Ansible
 
