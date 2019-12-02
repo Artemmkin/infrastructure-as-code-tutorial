@@ -6,7 +6,7 @@ Imagine that you're a young developer who developed a web application. You run a
 
 Then you realize that there is a small problem. You ask yourself a question: "How do I make my application available to the Internet users?"
 
-You're thinking that you can't run the application locally all the time, because your old laptop will become slow for other tasks and will probably crush if a lot of users will be using your app at the same time. Besides, your ISP changes randomly the public IP for your router, so you don't know on which IP address your application will be accessible to the public at any given moment.
+You're thinking that you can't run the application locally all the time, because your old laptop will become slow for other tasks and will probably crash if a lot of users will be using your app at the same time. Besides, your ISP changes randomly the public IP for your router, so you don't know on which IP address your application will be accessible to the public at any given moment.
 
 You start realizing that the problem you're facing is not as small as you thought. In fact, there is a whole new craft for you to learn in IT world about running software applications and making sure they are always available to the users.
 
