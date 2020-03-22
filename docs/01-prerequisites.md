@@ -30,7 +30,7 @@ $ gcloud auth application-default login
 
 This tutorial assumes a default compute region and zone have been configured.
 
-Set a default compute region:
+Set a default compute region appropriate to your location ([GCP regions and zones](https://cloud.google.com/compute/docs/regions-zones)):
 
 ```bash
 $ gcloud config set compute/region europe-west1
