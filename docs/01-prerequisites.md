@@ -36,7 +36,7 @@ Set a default compute region appropriate to your location ([GCP regions and zone
 $ gcloud config set compute/region europe-west1
 ```
 
-Set a default compute zone:
+Set a default compute zone appropriate to the zone:
 
 ```bash
 $ gcloud config set compute/zone europe-west1-b
