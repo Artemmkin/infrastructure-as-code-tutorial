@@ -110,6 +110,7 @@ Copy the `scripts` directory to the created VM:
 $ INSTANCE_IP=$(gcloud --format="value(networkInterfaces[0].accessConfigs[0].natIP)" compute instances describe raddit-instance-3)
 $ scp -r ./scripts raddit-user@${INSTANCE_IP}:/home/raddit-user
 ```
+NOTE: If you get an `offending ECDSA key` error, use the suggested removal command. 
 
 Connect to the VM via SSH:
 ```bash
