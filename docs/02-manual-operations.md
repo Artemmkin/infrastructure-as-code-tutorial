@@ -57,7 +57,7 @@ $ ssh-add -l
 
 To start the application, you need to first configure the environment for running it.
 
-Connect to the started VM via SSH:
+Connect to the started VM via SSH using the following two commands:
 
 ```bash
 $ INSTANCE_IP=$(gcloud --format="value(networkInterfaces[0].accessConfigs[0].natIP)" compute instances describe raddit-instance-2)
