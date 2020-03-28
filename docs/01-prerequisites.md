@@ -4,11 +4,11 @@
 
 In this tutorial, we use the [Google Cloud Platform](https://cloud.google.com/) to provision the compute infrastructure. You can [sign up](https://cloud.google.com/free/) for $300 in free credits, which will be more than sufficient to complete all of the labs in this tutorial.
 
-NOTE: SEIS664 -- You do not need to install the Google Cloud SDK if you are using the Google Cloud Shell as recommended for SEIS664. It is already installed.
+IMPORTANT: SEIS664 -- You do not need to install the Google Cloud SDK if you are using the Google Cloud Shell as recommended for SEIS664. It is already installed.
 
 ## Google Cloud Platform SDK
 
-### Install the Google Cloud SDK
+### (ONLY IF YOU ARE RUNNING LOCALLY) Install the Google Cloud SDK
 
 Follow the Google Cloud SDK [documentation](https://cloud.google.com/sdk/) to install and configure the `gcloud` command line utility for your platform.
 
