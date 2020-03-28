@@ -4,6 +4,8 @@
 
 In this tutorial, we use the [Google Cloud Platform](https://cloud.google.com/) to provision the compute infrastructure. You have already signed up. 
 
+Start in the Google Cloud Shell. 
+
 ## Google Cloud Platform
 ### Set a Default Project, Compute Region and Zone
 
