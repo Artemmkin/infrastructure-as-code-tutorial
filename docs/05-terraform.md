@@ -56,7 +56,7 @@ Create a new directory called `terraform` inside your `iac-tutorial` repo, which
 
 _Terraform allows you to describe the desired state of your infrastructure and makes sure your desired state meets the actual state._
 
-Terraform uses **resources** to describe different infrastructure components. If you want to use Terraform to manage some infrastructure component, you should first make sure there is a resource for that component for that particular platform.
+Terraform uses [**resources**](https://www.terraform.io/docs/configuration/resources.html) to describe different infrastructure components. If you want to use Terraform to manage some infrastructure component, you should first make sure there is a resource for that component for that particular platform.
 
 Let's use Terraform syntax to describe a VM instance that we want to be running.
 
