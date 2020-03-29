@@ -97,7 +97,7 @@ Create another file inside `terraform` folder and call it `providers.tf`. Put pr
 
 ```
 provider "google" {
-  version = "~> 1.4.0"
+  version = "~> 2.5.0"
   project = "infrastructure-as-code"
   region  = "us-central1-c"
 }
