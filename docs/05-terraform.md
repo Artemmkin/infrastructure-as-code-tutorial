@@ -206,7 +206,7 @@ resource "google_compute_instance" "raddit" {
 }
 
 resource "google_compute_project_metadata" "raddit" {
-  metadata {
+  metadata = {
     ssh-keys = "raddit-user:${file("~/.ssh/raddit-user.pub")}" // path to ssh key file
   }
 }
