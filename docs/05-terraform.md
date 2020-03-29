@@ -36,9 +36,11 @@ So we see here 2 clear problems:
 
 The second problem is dealt by source control tools like `git`, while the first one is solved by using tools like Terraform. Let's find out how.
 
-## Install Terraform
+##  Terraform
 
-[Download](https://www.terraform.io/downloads.html) and install Terraform on your system.
+Terraform is already installed on Google Cloud Shell. 
+
+If you want to install it on a laptop or VM, you can [download here](https://www.terraform.io/downloads.html).
 
 Make sure Terraform version is  => 0.11.0:
 
