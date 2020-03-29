@@ -111,6 +111,8 @@ Build the image for your application:
 $ packer build ./packer/raddit-base-image.json
 ```
 
+If you go to the [Compute Engine Images](https://console.cloud.google.com/compute/images) page you should see your new custom image. 
+
 ## Launch a VM with your custom built machine image
 
 Once the image is built, use it as a boot disk to start a VM:
