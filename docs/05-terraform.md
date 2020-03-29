@@ -66,7 +66,7 @@ Create a Terraform configuration file called `main.tf` inside the `terraform` di
 resource "google_compute_instance" "raddit" {
   name         = "raddit-instance"
   machine_type = "n1-standard-1"
-  zone         = "europe-west1-b"
+  zone         = "us-central1-c"
 
   # boot disk specifications
   boot_disk {
