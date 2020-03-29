@@ -188,7 +188,7 @@ Then add appropriate resources into `main.tf` file. Your final version of `main.
 resource "google_compute_instance" "raddit" {
   name         = "raddit-instance"
   machine_type = "n1-standard-1"
-  zone         = "europe-west1-b"
+  zone         = "us-central1-c"
 
   # boot disk specifications
   boot_disk {
