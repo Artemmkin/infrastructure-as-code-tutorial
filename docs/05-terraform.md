@@ -183,6 +183,8 @@ Make sure that your application became inaccessible via port 9292 and SSH connec
 
 Then add appropriate resources into `main.tf` file. Your final version of `main.tf` file should look similar to this (change the ssh key file path, if necessary):
 
+_Instructor's note 3/29/2020: there is some issue with this Terraform file, resulting in errors of missing required argument and unsupported block type. Currently troubleshooting._
+
 ```
 resource "google_compute_instance" "raddit" {
   name         = "raddit-instance"
