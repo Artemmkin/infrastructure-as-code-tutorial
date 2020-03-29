@@ -44,7 +44,7 @@ Create a `raddit-base-image.json` file inside the `packer` directory with the fo
     {
       "type": "googlecompute",
       "project_id": "infrastructure-as-code",
-      "zone": "europe-west1-b",
+      "zone": "us-central1-c",
       "machine_type": "g1-small",
       "source_image_family": "ubuntu-1604-lts",
       "image_name": "raddit-base-{{isotime `20060102-150405`}}",
@@ -78,7 +78,7 @@ Your template should look similar to this one:
     {
       "type": "googlecompute",
       "project_id": "infrastructure-as-code",
-      "zone": "europe-west1-b",
+      "zone": "us-central1-c",
       "machine_type": "g1-small",
       "source_image_family": "ubuntu-1604-lts",
       "image_name": "raddit-base-{{isotime `20060102-150405`}}",
