@@ -128,8 +128,6 @@ $ gcloud compute instances create raddit-instance-4 \
 
 Copy `deploy.sh` script to the created VM:
 
-_instructor's note: I am currently encountering an error here - the image does not seem to be correctly set up with my ssh public key._
-
 ```bash
 $ INSTANCE_IP=$(gcloud --format="value(networkInterfaces[0].accessConfigs[0].natIP)" compute instances describe raddit-instance-4)
 $ scp ./scripts/deploy.sh raddit-user@${INSTANCE_IP}:/home/raddit-user
