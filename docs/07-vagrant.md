@@ -1,6 +1,8 @@
-## Vagrant
+## Vagrant (OPTIONAL, for local laptops/workstations only)
 
 In this lab, we're going to learn about [Vagrant](https://www.vagrantup.com/) which is another tool that implements IaC approach and is often used for creating development environments.
+
+_This lab is optional for those of you want to learn Vagrant on your personal laptops and workstations. It will not work on GCE virtual machines, university workstations, or Google Cloud Shell. The alternative to local development is to create a local development VM in the cloud. You may skip to [Docker](08-docker.md)_.
 
 ## Intro
 
