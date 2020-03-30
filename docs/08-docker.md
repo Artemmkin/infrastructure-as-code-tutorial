@@ -183,7 +183,11 @@ Port mapping option (`--publish`) that we passed to the command is used to make 
 
 ## Access Application
 
-The application should be accessible to your at http://localhost:9292
+To access via the Google Cloud Shell, use the Web Preview: 
+
+![](../img/webPreview.png)
+
+(If you are running this tutorial locally, the application should be accessible to your at http://localhost:9292)
 
 ## Save and commit the work
 
