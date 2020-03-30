@@ -22,9 +22,16 @@ This is exactly what CM tools do. So let's check it out using Ansible as an exam
 
 NOTE: this lab assumes Ansible v2.4 is installed. It may not work as expected with other versions as things change quickly.
 
-You can follow the instructions on how to install Ansible on your system from [official documentation](http://docs.ansible.com/ansible/latest/intro_installation.html).
+Issue the following commands:
 
-I personally prefer installing it via [pip](http://docs.ansible.com/ansible/latest/intro_installation.html#latest-releases-via-pip) on my Linux machine.
+```
+$ sudo apt update
+$ sudo apt install software-properties-common
+$ sudo apt-add-repository --yes --update ppa:ansible/ansible
+$ sudo apt install ansible
+```
+
+If you have issues, reference the instructions on how to install Ansible on your system from [official documentation](http://docs.ansible.com/ansible/latest/intro_installation.html).
 
 Verify that Ansible was installed by checking the version:
 
