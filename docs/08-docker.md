@@ -16,7 +16,9 @@ They have some significant advantages over VMs in terms of implementing Immutabl
 
 Let's try to implement `Immutable Infrastructure` model with Docker containers, while paying special attention to the `Dockerfile` part as a way to practice `Infrastructure as Code` approach.
 
-## Install Docker Engine
+## (FOR PERSONAL LAPTOPS AND WORKSTATIONS ONLY) Install Docker Engine
+
+_Docker is already installed on Google Cloud Shell._
 
 The [Docker Engine](https://docs.docker.com/engine/docker-overview/#docker-engine) is the daemon that gets installed on the system and allows you to manage containers with simple CLI.
 
