@@ -187,6 +187,22 @@ To access via the Google Cloud Shell, use the Web Preview:
 
 ![](../img/webPreview.png)
 
+AT THIS WRITING, you cannot select port 9292. Select any offered port: 
+
+![](../img/webPreviewPorts.png)
+
+You will receive an error. Notice your URL which should look something like this: 
+
+`https://8080-dot-8658285-dot-devshell.appspot.com/?authuser=0`
+
+The first four digits after the `https://` represent the desired port. Change this to 9292, for example:
+
+`https://9292-dot-8658285-dot-devshell.appspot.com/?authuser=0`
+
+(Do not try to use that URL. Modify the one provided you.)
+
+You should now be able to see the application. 
+
 (If you are running this tutorial locally, the application should be accessible to your at http://localhost:9292)
 
 ## Save and commit the work
