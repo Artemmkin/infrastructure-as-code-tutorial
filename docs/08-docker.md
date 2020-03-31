@@ -189,7 +189,7 @@ To access via the Google Cloud Shell, use the Web Preview:
 
 AT THIS WRITING, you cannot select port 9292. Select any offered port: 
 
-![](../img/webPreviewPorts.png)
+![](../img/webPreviewPort.png)
 
 You will receive an error. Notice your URL which should look something like this: 
 
