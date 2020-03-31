@@ -14,7 +14,7 @@ To make the management of our local container infrastructure easier and more rel
 
 **Docker Compose** is exactly the tool we need. Let's see how we can use it.
 
-## Install Docker Compose
+## (FOR PERSONAL LAPTOPS AND WORKSTATIONS ONLY) Install Docker Compose
 
 Follow the official documentation on [how to install Docker Compose](https://docs.docker.com/compose/install/) on your system.
 
