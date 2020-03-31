@@ -20,7 +20,9 @@ Kubernetes is the most widely used orchestration platform for running and managi
 
 Let's try to run our `raddit` application on a Kubernetes cluster.
 
-## Install Kubectl
+## (FOR PERSONAL LAPTOPS AND WORKSTATIONS ONLY) Install Kubectl
+
+Kubectl is installed on the Google Cloud Shell. 
 
 [Kubectl](https://kubernetes.io/docs/reference/kubectl/overview/) is command line tool that we will use to run commands against the Kubernetes cluster.
 
