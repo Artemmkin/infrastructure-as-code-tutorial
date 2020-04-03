@@ -48,12 +48,54 @@ We'll use [Google Kubernetes Engine](https://cloud.google.com/kubernetes-engine/
 
 We'll describe a Kubernetes cluster using Terraform so that we can manage it through code.
 
-Create a directory named `terraform` inside `kubernetes` directory. Download a bundle of Terraform configuration files into the created `terraform` directory.
+Create a directory named `terraform` inside `kubernetes` directory. Create three files within it: 
 
 ```bash
-$ wget https://github.com/Artemmkin/gke-terraform/raw/master/gke-terraform.zip
-$ unzip gke-terraform.zip -d kubernetes/terraform
-$ rm gke-terraform.zip
+variables.tf
+terraform.tfvars
+main.tf
+```
+
+### variables.tf
+```bash
+# Provider configuration variables
+variable "project_id" {
+  description = "Project ID in GCP"
+}
+
+variable "region" {
+  description = "Region in which to manage GCP resources"
+}
+
+# Cluster configuration variables
+variable "cluster_name" {
+  description = "The name of the cluster, unique within the project and zone"
+}
+
+variable "zone" {
+  description = "The zone in which nodes specified in initial_node_count should be created in"
+}
+© 2020 GitHub, Inc.
+Terms
+Privacy
+
+
+```
+### terraform.tfvars
+```bash
+// define provider configuration variables
+project_id = "proven-sum-252123"         # project in which to create a cluster
+region = "us-central1"                       # region in which to create a cluster
+
+// define Kubernetes cluster variables
+cluster_name = "iac-tutorial-cluster"        # cluster name
+zone = "us-central1-c"                      # zone in which to create a cluster nodes
+
+```
+
+### variables.tf
+```bash
+
 ```
 
 We'll use this Terraform code to create a Kubernetes cluster.
