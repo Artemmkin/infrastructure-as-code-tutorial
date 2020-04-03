@@ -104,7 +104,7 @@ CMD ["puma"]
 
 ## Build Container Image
 
-Once you defined how your image should be built, run the following command inside `iac-tutorial` directory to create a container image for raddit application:
+Once you defined how your image should be built, run the following command inside `docker` directory to create a container image for raddit application:
 
 ```bash
 $ docker build --tag raddit .
