@@ -112,7 +112,12 @@ $ scp -r ./scripts raddit-user@${INSTANCE_IP}:/home/raddit-user
 ```
 NOTE: If you get an `offending ECDSA key` error, use the suggested removal command. 
 
-NOTE: If you get the error `Permission denied (publickey).`, this probably means that your ssh-agent no longer has the raddit-user private key added. This easily happens if the Google Cloud Shell goes to sleep and wipes out your session. Check via issuing `ssh-add -l`. You should see something like `2048 SHA256:bII5VsQY3fCWXEai0lUeChEYPaagMXun3nB9U2eoUEM /home/betz4871/.ssh/raddit-user (RSA)`. If you do not, re-issue the command `ssh-add ~/.ssh/raddit-user` and re-confirm with `ssh-add -l`.
+NOTE: If you get the error `Permission denied (publickey).`, this probably means that your ssh-agent no longer has the raddit-user private key added. This easily happens if the Google Cloud Shell goes to sleep and wipes out your session. Check via issuing `ssh-add -l`. 
+
+If you get a message to the effect that your agent is not running, type ``eval `ssh-agent` `` and then `ssh-add -l`.
+You should see something like `2048 SHA256:bII5VsQY3fCWXEai0lUeChEYPaagMXun3nB9U2eoUEM /home/betz4871/.ssh/raddit-user (RSA)`. If you do not, re-issue the command `ssh-add ~/.ssh/raddit-user` and re-confirm with `ssh-add -l`.
+
+
 Connect to the VM via SSH:
 ```bash
 $ ssh raddit-user@${INSTANCE_IP}
