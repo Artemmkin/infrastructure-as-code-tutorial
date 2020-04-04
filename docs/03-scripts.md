@@ -216,10 +216,5 @@ It's also a first step we've made in the direction of automating operations work
 
 But scripts are not suitable for every operations task and have many downsides. We'll discuss more on that in the next labs.
 
-Destroy the current VM before moving onto the next step:
-
-```bash
-$ gcloud compute instances delete raddit-instance-3
-```
 
 Next: [Packer](04-packer.md)
