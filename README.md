@@ -29,9 +29,9 @@ The target audience for this tutorial is anyone who loves or/and works in IT.
 
 ## Results of completing the tutorial
 
-By the end of this tutorial, you'll make your own repository looking like [this one](https://github.com/Artemmkin/infrastructure-as-code-example).
+By the end of this tutorial, you'll make your own repository looking like [this one](https://github.com/dm-academy/iac-tutorial-rsrc).
 
-NOTE: you can use this [example repository](https://github.com/Artemmkin/infrastructure-as-code-example) in case you get stuck in some of the labs.
+NOTE: you can use this [example repository](https://github.com/dm-academy/iac-tutorial-rsrc) in case you get stuck in some of the labs.
 
 ## Labs
 
