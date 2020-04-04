@@ -162,13 +162,15 @@ $ ./deploy.sh
 
 Manually re-create the firewall rule: 
 
-gcloud compute firewall-rules create allow-raddit-tcp-9292 \
+```bash
+$ gcloud compute firewall-rules create allow-raddit-tcp-9292 \
     --network default \
     --action allow \
     --direction ingress \
     --rules tcp:9292 \
     --source-ranges 0.0.0.0/0
-    
+```
+
 Access the application in your browser by its public IP (don't forget to specify the port 9292).
 
 Open another terminal and run the following command to get a public IP of the VM:
@@ -176,6 +178,12 @@ Open another terminal and run the following command to get a public IP of the VM
 ```bash
 $ gcloud --format="value(networkInterfaces[0].accessConfigs[0].natIP)" compute instances describe raddit-instance-4
 ```
+
+## De-provision
+```bash
+$ gcloud compute instances delete -q raddit-instance-4
+$ gcloud compute firewall-rules delete -q allow-raddit-tcp-9292 
+``` 
 
 ## Save and commit the work
 
@@ -202,11 +210,5 @@ The advantages of its usage are quite obvious:
 * `It requires less time and effort to configure a new VM for running the application`
 * `System configuration becomes more reliable.` When we start a new VM to deploy the application, we know for sure that it has the right packages installed and configured properly, since we built and tested the image.
 
-Destroy the current VM and rirewall rule and move onto the next lab:
-
-```bash
-$ gcloud compute instances delete raddit-instance-4
-$ gcloud compute firewall-rules delete -q allow-raddit-tcp-9292 
-```
 
 Next: [Terraform](05-terraform.md)
