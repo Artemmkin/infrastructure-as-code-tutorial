@@ -45,7 +45,7 @@ Dockerfile contains `instructions` on how the image should be built. Here are so
 
 Let's use these instructions to create a Docker container image for our raddit application.
 
-Create a folder called `docker` inside your `iac-tutorial` repo. Inside of that new directory, create a text file called `Dockerfile` with the following content:
+Inside your `my-iac-tutorial` directory, create a text file called `Dockerfile` with the following content:
 
 ```
 # Use base image with Ruby installed
@@ -104,7 +104,7 @@ CMD ["puma"]
 
 ## Build Container Image
 
-Once you defined how your image should be built, run the following command inside `docker` directory to create a container image for raddit application:
+Once you defined how your image should be built, run the following command inside your `my-iac-tutorial` directory to create a container image for raddit application:
 
 ```bash
 $ docker build --tag raddit .
