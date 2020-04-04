@@ -80,12 +80,12 @@ variable "zone" {
 ### terraform.tfvars
 ```bash
 // define provider configuration variables
-project_id = "proven-sum-252123"         # project in which to create a cluster
-region = "us-central1"                       # region in which to create a cluster
+project_id = "some-project-ID"         # project in which to create a cluster
+region = "some-google-region"                       # region in which to create a cluster
 
 // define Kubernetes cluster variables
 cluster_name = "iac-tutorial-cluster"        # cluster name
-zone = "us-central1-c"                      # zone in which to create a cluster nodes
+zone = "some-google-zone"                      # zone in which to create a cluster nodes
 
 ```
 
@@ -149,7 +149,7 @@ We'll use this Terraform code to create a Kubernetes cluster.
 
 ## Create Kubernetes Cluster
 
-`main.tf` which you downloaded holds all the information about the cluster that should be created. It's parameterized using Terraform [input variables](https://www.terraform.io/intro/getting-started/variables.html) which allow you to easily change configuration parameters.
+`main.tf` holds all the information about the cluster that should be created. It's parameterized using Terraform [input variables](https://www.terraform.io/intro/getting-started/variables.html) which allow you to easily change configuration parameters.
 
 Look into `terraform.tfvars` file which contains definitions of the input variables and change them if necessary. You'll most probably want to change `project_id` value.
 
@@ -162,6 +162,7 @@ region = "europe-west1"                       # region in which to create a clus
 cluster_name = "iac-tutorial-cluster"        # cluster name
 zone = "europe-west1-b"                      # zone in which to create a cluster nodes
 ```
+
 After you've defined the variables, run Terraform inside `kubernetes/terraform` to create a Kubernetes cluster consisting of 2 nodes (VMs for running our application containers).
 
 ```bash
