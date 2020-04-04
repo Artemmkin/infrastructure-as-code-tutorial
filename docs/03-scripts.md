@@ -184,16 +184,22 @@ Open another terminal and run the following command to get a public IP of the VM
 $ gcloud --format="value(networkInterfaces[0].accessConfigs[0].natIP)" compute instances describe raddit-instance-3
 ```
 
+## Destroy (de-provision) the resources by script
+
+In the `provision` directory create a script `deprovision.sh`. 
+
+```bash
+#!/bin/bash
+gcloud compute instances delete -q raddit-instance-3
+gcloud compute firewall-rules delete -q allow-raddit-tcp-9292 
+```
+
+Set permissions correctly (see previous) and execute. 
+
 ## Save and commit the work
 
 Save and commit the scripts created in this lab into your `iac-tutorial` repo.
 
-Destroy the current VM and firewall rule and move to the next step:
-
-```bash
-$ gcloud compute instances delete -q raddit-instance-3
-$ gcloud compute firewall-rules delete -q allow-raddit-tcp-9292 
-```
 
 ## Conclusion
 
