@@ -187,10 +187,11 @@ Congrats! You've just deployed your application. It is running on a dedicated se
 
 Now that you've got the idea of what sort of steps you have to take to deploy your code from your local machine to a virtual server running in the cloud, let's see how we can do it more efficiently.
 
-Destroy the current VM and move to the next step:
+Destroy the current VM and firewall rule and move to the next step:
 
 ```bash
-$ gcloud compute instances delete raddit-instance-2
+$ gcloud compute instances delete -q raddit-instance-2
+$ gcloud compute firewall-rules delete -q allow-raddit-tcp-9292 
 ```
 
 Next: [Scripts](03-scripts.md)
