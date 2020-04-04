@@ -217,7 +217,7 @@ spec:
     spec:
       containers:
       - name: raddit
-        image: raddit
+        image: dmacademy/raddit
         env:
         - name: DATABASE_HOST
           value: mongo-service
@@ -276,7 +276,7 @@ In the Pod object definition (`Pod template`) we specify container information s
     spec:
       containers:
       - name: raddit
-        image: artemkin/raddit
+        image: dmacademy/raddit
         env:
         - name: DATABASE_HOST
           value: mongo-service
@@ -284,7 +284,9 @@ In the Pod object definition (`Pod template`) we specify container information s
 
 Notice how we also pass an environment variable to the container. `DATABASE_HOST` variable tells our application how to contact the database. We define `mongo-service` as its value to specify the name of the Kubernetes service to contact (more about the Services will be in the next section).
 
-Container images will be downloaded from Docker Hub in this case.
+Container images will be downloaded from Docker Hub in this case: the generic mongo container and the raddit image uploaded to the dmacademy organization.
+
+*It would be nice if we could use the locally built raddit image. Extra credit for anyone who can figure out how to do that.*
 
 ## Create Deployment Objects
 
