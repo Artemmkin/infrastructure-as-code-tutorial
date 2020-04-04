@@ -162,6 +162,17 @@ $ ./deploy.sh
 
 ## Access the Application
 
+Manually create the firewall rule: 
+
+```bash 
+$ gcloud compute firewall-rules create allow-raddit-tcp-9292 \
+    --network default \
+    --action allow \
+    --direction ingress \
+    --rules tcp:9292 \
+    --source-ranges 0.0.0.0/0
+```
+
 Access the application in your browser by its public IP (don't forget to specify the port 9292).
 
 Open another terminal and run the following command to get a public IP of the VM:
@@ -172,9 +183,7 @@ $ gcloud --format="value(networkInterfaces[0].accessConfigs[0].natIP)" compute i
 
 ## Add other GCP resources into Terraform
 
-Do you remember how in previous labs we created some GCP resources like SSH project keys and a firewall rule for our application via `gcloud` tool?
-
-Let's add those into our Terraform configuration so that we know for sure those resources are present.
+Let's add ssh keys and the firewall rule into our Terraform configuration so that we know for sure those resources are present.
 
 First, delete the SSH project key and firewall rule:
 
