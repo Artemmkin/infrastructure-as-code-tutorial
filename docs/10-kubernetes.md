@@ -44,7 +44,7 @@ Create a new directory called `kubernetes` inside your `iac-tutorial` repo, whic
 
 ## Describe Kubernetes cluster in Terraform
 
-We'll use [Google Kubernetes Engine](https://cloud.google.com/kubernetes-engine/) (GKE) service to deploy a Kubernetes cluster of 2 nodes.
+We'll use [Google Kubernetes Engine](https://cloud.google.com/kubernetes-engine/) (GKE) service to deploy a Kubernetes cluster of 3 nodes.
 
 We'll describe a Kubernetes cluster using Terraform so that we can manage it through code.
 
@@ -75,10 +75,6 @@ variable "cluster_name" {
 variable "zone" {
   description = "The zone in which nodes specified in initial_node_count should be created in"
 }
-© 2020 GitHub, Inc.
-Terms
-Privacy
-
 
 ```
 ### terraform.tfvars
