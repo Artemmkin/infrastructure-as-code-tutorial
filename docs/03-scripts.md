@@ -12,39 +12,81 @@ Doing it manually is boring, error-prone and time-consuming.
 
 The most obvious way for improvement is using Bash scripts which allow us to run sets of commands put in a single file. So let's try this.
 
-## Provision Compute Resources
-
-Start a new VM for this lab. The command should look familiar:
-
-```bash
-$ gcloud compute instances create raddit-instance-3 \
-    --image-family ubuntu-1604-lts \
-    --image-project ubuntu-os-cloud \
-    --boot-disk-size 10GB \
-    --machine-type n1-standard-1
-```
-
 ## Infrastructure as Code project
 
 Starting from this lab, we're going to use a git repo for saving all the work done in this tutorial.
 
-Download a repo for the tutorial:
+Go to your Github account and create a new repository called my-iac-repo. No README or .gitignore. Copy the URL. 
+
+Clone locally: 
 
 ```bash
-$ git clone https://github.com/Artemmkin/iac-tutorial.git
-```
-
-Delete git information about a remote repository:
-```bash
-$ cd ./iac-tutorial
-$ git remote remove origin
+$ git clone <Github URL of your new repository>
 ```
 
 Create a directory for this lab:
 
 ```bash
-$ mkdir scripts
+$ cd my-iac-repo
+$ mkdir script
 ```
+
+To push your changes up to Github: 
+
+```bash
+$ git add . -A
+$ git commit -m "some message"
+$ git push origin master
+```
+
+Always issue these commands several times during each session. 
+
+## Provisioning script
+
+We can automate the process of creating the VM and the firewall rule. 
+
+In the `script` directory create a directory `provision`. 
+
+Create a script `provision.sh`: 
+
+```bash
+#!/bin/bash
+# add new VM
+gcloud compute instances create raddit-instance-3 \
+    --image-family ubuntu-1604-lts \
+    --image-project ubuntu-os-cloud \
+    --boot-disk-size 10GB \
+    --machine-type n1-standard-1
+
+# add firewall rule
+gcloud compute firewall-rules create allow-raddit-tcp-9292 \
+    --network default \
+    --action allow \
+    --direction ingress \
+    --rules tcp:9292 \
+    --source-ranges 0.0.0.0/0
+```
+
+Run it in the Google Cloud Shell: 
+
+```bash
+$ chmod +x provision/provision.sh
+$ ./provision/provision.sh
+```
+
+You should see results similar to: 
+
+```bash
+WARNING: You have selected a disk size of under [200GB]. This may result in poor I/O performance. For more information, see: https://developers.google.com/compute/docs/disks#performance.
+Created [https://www.googleapis.com/compute/v1/projects/proven-sum-252123/zones/us-central1-c/instances/raddit-instance-3].
+NAME               ZONE           MACHINE_TYPE   PREEMPTIBLE  INTERNAL_IP  EXTERNAL_IP   STATUS
+raddit-instance-3  us-central1-c  n1-standard-1               10.128.0.58  34.71.103.20  RUNNING
+Creating firewall...⠹Created [https://www.googleapis.com/compute/v1/projects/proven-sum-252123/global/firewalls/allow-raddit-tcp-9292].
+Creating firewall...done.
+NAME                   NETWORK  DIRECTION  PRIORITY  ALLOW     DENY  DISABLED
+allow-raddit-tcp-9292  default  INGRESS    1000      tcp:9292        False
+```
+
 
 ## Configuration script
 
@@ -52,9 +94,11 @@ Before we can run our application, we need to create a running environment for i
 
 We are going to use the same commands we used before to do that, but this time, instead of running commands one by one, we'll create a `bash script` to save us some struggle.
 
+In the `script` directory create a directory `config`.
+
 Create a bash script to install Ruby, Bundler and MongoDB, and copy a systemd unit file for the application.
 
-Save it to the `configuration.sh` file inside created `scripts` directory:
+Save it to the `configuration.sh` file inside created `config` directory:
 
 ```bash
 #!/bin/bash
@@ -84,7 +128,7 @@ mv raddit.service /etc/systemd/system/raddit.service
 
 Create a script for copying the application code from GitHub repository, installing dependent gems and starting it.
 
-Save it into `deploy.sh` file inside `scripts` directory:
+Save it into `deploy.sh` file inside `config` directory:
 
 ```bash
 #!/bin/bash
@@ -104,11 +148,11 @@ sudo systemctl enable raddit
 
 ## Run the scripts
 
-Copy the `scripts` directory to the created VM:
+Copy the `config` directory to the created VM (you need to be in the `scripts` directory, or else make adjustments to your paths:
 
 ```bash
 $ INSTANCE_IP=$(gcloud --format="value(networkInterfaces[0].accessConfigs[0].natIP)" compute instances describe raddit-instance-3)
-$ scp -r ./scripts raddit-user@${INSTANCE_IP}:/home/raddit-user
+$ scp -r ./config raddit-user@${INSTANCE_IP}:/home/raddit-user
 ```
 NOTE: If you get an `offending ECDSA key` error, use the suggested removal command. 
 
@@ -125,9 +169,9 @@ $ ssh raddit-user@${INSTANCE_IP}
 
 Run the scripts:
 ```bash
-$ chmod +x ./scripts/*.sh
-$ sudo ./scripts/configuration.sh
-$ ./scripts/deploy.sh
+$ chmod +x ./config/*.sh
+$ sudo ./config/configuration.sh
+$ ./config/deploy.sh
 ```
 
 ## Access the Application
