@@ -217,7 +217,7 @@ spec:
     spec:
       containers:
       - name: raddit
-        image: artemkin/raddit
+        image: raddit
         env:
         - name: DATABASE_HOST
           value: mongo-service
