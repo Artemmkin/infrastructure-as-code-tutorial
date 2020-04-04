@@ -8,7 +8,7 @@ Now think about what happens if your application becomes so popular that one vir
 
 In all of these cases we face the task of provisioning new virtual machines, installing the required software and repeating all of the configurations we've made in the previous lab over and over again.
 
-Doing it manually is `boring`, `error-prone` and `time-consuming`.
+Doing it manually is boring, error-prone and time-consuming.
 
 The most obvious way for improvement is using Bash scripts which allow us to run sets of commands put in a single file. So let's try this.
 
@@ -143,6 +143,13 @@ $ gcloud --format="value(networkInterfaces[0].accessConfigs[0].natIP)" compute i
 ## Save and commit the work
 
 Save and commit the scripts created in this lab into your `iac-tutorial` repo.
+
+Destroy the current VM and firewall rule and move to the next step:
+
+```bash
+$ gcloud compute instances delete -q raddit-instance-3
+$ gcloud compute firewall-rules delete -q allow-raddit-tcp-9292 
+```
 
 ## Conclusion
 
