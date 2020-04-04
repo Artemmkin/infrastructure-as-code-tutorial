@@ -135,7 +135,7 @@ $ docker-compose up -d
 
 ## Access Application
 
-The application should be accessible to your as before at http://localhost:9292
+The application should be accessible to your as before via the web preview icon in Google Cloud Shell. `curl localhost:9292` will at least dump out the HTML (not very pretty, but if you see HTML you know the service is working to some degree at least). 
 
 ## Save and commit the work
 
