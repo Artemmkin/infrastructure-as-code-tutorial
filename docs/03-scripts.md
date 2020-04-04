@@ -194,7 +194,12 @@ gcloud compute instances delete -q raddit-instance-3
 gcloud compute firewall-rules delete -q allow-raddit-tcp-9292 
 ```
 
-Set permissions correctly (see previous) and execute. 
+Set permissions correctly (see previous) and execute. You should get results like:
+
+```bash
+Deleted [https://www.googleapis.com/compute/v1/projects/proven-sum-252123/zones/us-central1-c/instances/raddit-instance-3].
+Deleted [https://www.googleapis.com/compute/v1/projects/proven-sum-252123/global/firewalls/allow-raddit-tcp-9292].
+```
 
 ## Save and commit the work
 
