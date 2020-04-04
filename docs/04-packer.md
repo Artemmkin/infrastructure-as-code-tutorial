@@ -16,7 +16,7 @@ Luckily, we can create custom machine images with required configuration and sof
 
 [Download](https://www.packer.io/downloads.html) and install Packer onto your system (this means the Google Cloud Shell). 
 
-If you have issues, consult [this gist](https://gist.github.com/CharlesTBetz/20daf92169689e572873439439e1ad4f). 
+If you have issues, consult [this script](https://github.com/dm-academy/iac-tutorial-rsrc/blob/master/packer/install-packer.sh). 
 
 Check the version to verify that it was installed:
 
