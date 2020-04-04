@@ -154,10 +154,13 @@ Verify that it's running:
 ```bash
 $ sudo systemctl status raddit
 ```
+Exit the VM. 
+
+`$ exit`
 
 ## Access the Application
 
-Open a firewall port the application is listening on (note that the following command should be run on your local machine):
+Open a firewall port the application is listening on (note that the following command should be run on the Google Cloud Shell):
 
 ```bash
 $ gcloud compute firewall-rules create allow-raddit-tcp-9292 \
