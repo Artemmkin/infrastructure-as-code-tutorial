@@ -41,7 +41,12 @@ $ gcloud compute project-info add-metadata \
     --metadata ssh-keys="raddit-user:$(cat ~/.ssh/raddit-user.pub)"
 ```
 
-Run your ssh-agent is running:
+Check your ssh-agent is running:
+
+```bash
+$ echo $SSH_AGENT_PID
+```
+If you get a number, it is running. If you get nothing, then run: 
 
 ```bash
 $ eval `ssh-agent`
