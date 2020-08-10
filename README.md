@@ -29,9 +29,7 @@ The target audience for this tutorial is anyone who loves or/and works in IT.
 
 ## Results of completing the tutorial
 
-By the end of this tutorial, you'll make your own repository looking like [this one](https://github.com/dm-academy/iac-tutorial-rsrc).
-
-NOTE: you can use this [example repository](https://github.com/dm-academy/iac-tutorial-rsrc) in case you get stuck in some of the labs.
+By the end of this tutorial, you'll make your own repository looking like [this one](https://github.com/dm-academy/iac-tutorial-rsrc). Feel free to inspect it in case you get stuck in some of the labs.
 
 ## Labs
 
