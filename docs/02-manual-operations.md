@@ -71,8 +71,8 @@ To start the application, you need to first configure the environment for runnin
 Connect to the started VM via SSH using the following two commands:
 
 ```bash
-$ INSTANCE_IP=$(gcloud --format="value(networkInterfaces[0].accessConfigs[0].natIP)" compute instances describe raddit-instance-2)
-$ ssh raddit-user@${INSTANCE_IP}
+$ INSTANCE_IP=$(gcloud --format="value(networkInterfaces[0].accessConfigs[0].natIP)" compute instances describe node-svc-instance)
+$ ssh node-user@${INSTANCE_IP}
 ```
 
 Install Ruby:
