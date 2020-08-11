@@ -4,9 +4,7 @@ To better understand the `Infrastructure as Code` (`IaC`) concept, we will first
 
 ## Intro
 
-Imagine you have developed a new cool application called [raddit](https://github.com/Artemmkin/raddit).
-
-_This is where I left off 8/9.  Need to convert to node-svc_
+Imagine you have developed a new cool application called [node-svc](https://github.com/dm-academy/node-svc-v1).
 
 You want to run your application on a dedicated server and make it available to the Internet users.
 
