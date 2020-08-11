@@ -31,14 +31,14 @@ $ gcloud compute instances create node-svc-instance \
 Generate an SSH key pair for future connections to the VM instances (run the command exactly as it is):
 
 ```bash
-$ ssh-keygen -t rsa -f ~/.ssh/raddit-user -C raddit-user -P ""
+$ ssh-keygen -t rsa -f ~/.ssh/raddit-user -C node-user -P ""
 ```
 
 Create an SSH public key for your project:
 
 ```bash
 $ gcloud compute project-info add-metadata \
-    --metadata ssh-keys="raddit-user:$(cat ~/.ssh/raddit-user.pub)"
+    --metadata ssh-keys="node-user:$(cat ~/.ssh/node-user.pub)"
 ```
 
 Check your ssh-agent is running:
@@ -55,7 +55,7 @@ $ eval `ssh-agent`
 Add the SSH private key to the ssh-agent:
 
 ```
-$ ssh-add ~/.ssh/raddit-user
+$ ssh-add ~/.ssh/node-user
 ```
 
 Verify that the key was added to the ssh-agent:
