@@ -31,7 +31,7 @@ $ gcloud compute instances create node-svc-instance \
 Generate an SSH key pair for future connections to the VM instances (run the command exactly as it is):
 
 ```bash
-$ ssh-keygen -t rsa -f ~/.ssh/raddit-user -C node-user -P ""
+$ ssh-keygen -t rsa -f ~/.ssh/node-user -C node-user -P ""
 ```
 
 Create an SSH public key for your project:
