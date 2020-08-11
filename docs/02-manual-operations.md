@@ -22,7 +22,7 @@ Use the following gcloud command in your terminal to launch a VM with Ubuntu 16.
 $ gcloud compute instances create node-svc-instance \
     --image-family ubuntu-1604-lts \
     --image-project ubuntu-os-cloud \
-    --boot-disk-size 1GB \
+    --boot-disk-size 10GB \
     --machine-type f1-micro
 ```
 
