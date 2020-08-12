@@ -75,8 +75,6 @@ $ INSTANCE_IP=$(gcloud --format="value(networkInterfaces[0].accessConfigs[0].nat
 $ ssh node-user@${INSTANCE_IP}
 ```
 
-
-_left off here_
 Install Node and npm:
 
 ```bash
