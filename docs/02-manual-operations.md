@@ -77,122 +77,83 @@ $ ssh node-user@${INSTANCE_IP}
 
 
 _left off here_
-Install Ruby:
+Install Node and npm:
 
 ```bash
 $ sudo apt-get update
-$ sudo apt-get install -y ruby-full build-essential
+$ sudo apt-get install nodejs npm 
 ```
 
-Check the installed version of Ruby:
+Check the installed version of Node:
 
 ```bash
-$ ruby -v
+$ nodejs -v
 ```
 
-Install Bundler:
-
+Install `git`:
 ```bash
-$ sudo gem install --no-rdoc --no-ri bundler
-$ bundle version
+$ sudo apt install git
 ```
 
-Clone the [application repo](https://github.com/Artemmkin/raddit), but first make sure `git` is installed:
+Clone the application repo into the home directory of `node-user` user (reminder, how do you clone to the right location?):
+
 ```bash
-$ git version
+$ git clone https://github.com/dm-academy/node-svc-v1
+```
+Navigate to the repo and check out the 02 branch (matching this lesson)
+
+```bash
+$ git checkout 02
+Branch 02 set up to track remote branch 02 from origin.
+Switched to a new branch '02'
 ```
 
-At the time of writing the latest image of Ubuntu 16.04 which GCP provides has `git` preinstalled, so we can skip this step.
-
-Clone the application repo into the home directory of `raddit-user` user:
+Initialize npm (Node Package Manager) and install express:
 
 ```bash
-$ git clone https://github.com/Artemmkin/raddit.git
-```
-
-Install application dependencies using Bundler:
-
-```bash
-$ cd ./raddit
-$ sudo bundle install
-```
-
-## Prepare Database
-
-Install MongoDB which your application uses:
-
-```bash
-$ sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv EA312927
-$ echo "deb http://repo.mongodb.org/apt/ubuntu xenial/mongodb-org/3.2 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-3.2.list
-$ sudo apt-get update
-$ sudo apt-get install -y mongodb-org --allow-unauthenticated
-```
-
-Start MongoDB and enable autostart:
-
-```bash
-$ sudo systemctl start mongod
-$ sudo systemctl enable mongod
-```
-
-Verify that MongoDB is running:
-
-```bash
-$ sudo systemctl status mongod
+$ npm install
+$ npm install express
 ```
 
 ## Start the Application
 
-Download a systemd unit file for starting the application from a gist:
+Start the Node web server: 
 
 ```bash
-$ wget https://gist.githubusercontent.com/Artemmkin/ce82397cfc69d912df9cd648a8d69bec/raw/7193a36c9661c6b90e7e482d256865f085a853f2/raddit.service
+$ nodejs server.js &
+Running on 3000
 ```
 
-Move it to the systemd directory
+Test it: 
 
 ```bash
-$ sudo mv raddit.service /etc/systemd/system/raddit.service
+$ curl localhost:3000
+Successful request.
 ```
 
-Now start the application and enable autostart:
-
-```bash
-$ sudo systemctl start raddit
-$ sudo systemctl enable raddit
-```
-
-Verify that it's running:
-
-```bash
-$ sudo systemctl status raddit
-```
-Exit the VM. 
-
-`$ exit`
 
 ## Access the Application
 
 Open a firewall port the application is listening on (note that the following command should be run on the Google Cloud Shell):
 
 ```bash
-$ gcloud compute firewall-rules create allow-raddit-tcp-9292 \
+$ gcloud compute firewall-rules create allow-node-svc-tcp-3000 \
     --network default \
     --action allow \
     --direction ingress \
-    --rules tcp:9292 \
+    --rules tcp:3000 \
     --source-ranges 0.0.0.0/0
 ```
 
 Get the public IP of the VM:
 
 ```bash
-$ gcloud --format="value(networkInterfaces[0].accessConfigs[0].natIP)" compute instances describe raddit-instance-2
+$ gcloud --format="value(networkInterfaces[0].accessConfigs[0].natIP)" compute instances describe node-svc-instance
 ```
 
-Now open your browser and try to reach the application at the public IP and port 9292.
+Now open your browser and try to reach the application at the public IP and port 3000.
 
-For example, I put in my browser the following URL http://104.155.1.152:9292, but note that you'll have your own IP address.
+For example, I put in my browser the following URL http://104.155.1.152:3000, but note that you'll have your own IP address.
 
 ## Conclusion
 
@@ -203,8 +164,8 @@ Now that you've got the idea of what sort of steps you have to take to deploy yo
 Destroy the current VM and firewall rule and move to the next step:
 
 ```bash
-$ gcloud compute instances delete -q raddit-instance-2
-$ gcloud compute firewall-rules delete -q allow-raddit-tcp-9292 
+$ gcloud compute instances delete -q node-svc-instance
+$ gcloud compute firewall-rules delete -q allow-node-svc-tcp-9292 
 ```
 
 Next: [Scripts](03-scripts.md)
