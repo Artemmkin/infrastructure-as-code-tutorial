@@ -126,57 +126,60 @@ $ terraform apply
 After Terraform ran successfully, use a gcloud command to verify that the machine was indeed launched:
 
 ```bash
-$ gcloud compute instances describe raddit-instance
+$ gcloud compute instances describe node-svc
 ```
 
 ## Deploy Application
 
-We did provisioning via Terraform, but we still need to run a script to deploy our application.
+We did provisioning via Terraform, but we still need to run a command to start our application. Let's do this remotely this time, instead of logging into the machine:
 
-Copy `deploy.sh` script to the created VM:
+Get the IP of the created VM:
 
 ```bash
-$ INSTANCE_IP=$(gcloud --format="value(networkInterfaces[0].accessConfigs[0].natIP)" compute instances describe raddit-instance)
-$ scp ../scripts/deploy.sh raddit-user@${INSTANCE_IP}:/home/raddit-user
+$ INSTANCE_IP=$(gcloud --format="value(networkInterfaces[0].accessConfigs[0].natIP)" compute instances describe node-svc)
+$ rsh ${INSTANCE_IP} -l node-user sudo nodejs /home/node-user/node-svc-v1/server.js &
 ```
 
 NOTE: If you get an offending ECDSA key error, use the suggested removal command.
 
-NOTE: If you get the error `Permission denied (publickey).`, this probably means that your ssh-agent no longer has the raddit-user private key added. This easily happens if the Google Cloud Shell goes to sleep and wipes out your session. Check via issuing `ssh-add -l`. You should see something like `2048 SHA256:bII5VsQY3fCWXEai0lUeChEYPaagMXun3nB9U2eoUEM /home/betz4871/.ssh/raddit-user (RSA)`. If you do not, re-issue the command `ssh-add ~/.ssh/raddit-user` and re-confirm with `ssh-add -l`. 
+NOTE: If you get the error `Permission denied (publickey).`, this probably means that your ssh-agent no longer has the raddit-user private key added. This easily happens if the Google Cloud Shell goes to sleep and wipes out your session. Check via issuing `ssh-add -l`. You should see something like `2048 SHA256:bII5VsQY3fCWXEai0lUeChEYPaagMXun3nB9U2eoUEM /home/betz4871/.ssh/raddit-user (RSA)`. If you do not, re-issue the command `ssh-add ~/.ssh/node-user` and re-confirm with `ssh-add -l`. 
 
 Connect to the VM via SSH:
 
 ```bash
-$ ssh raddit-user@${INSTANCE_IP}
+$ ssh node-user@${INSTANCE_IP}
 ```
 
-Run deployment script:
+Check that servce is running, and then exit:
 
 ```bash
-$ chmod +x ./deploy.sh
-$ ./deploy.sh
+node-user@node-svc:~$ curl localhost:3000
+Successful request.
+node-user@node-svc:~$ exit
 ```
 
-## Access the Application
+## Access the Application Externally7
 
 Manually create the firewall rule: 
 
 ```bash 
-$ gcloud compute firewall-rules create allow-raddit-tcp-9292 \
+$ gcloud compute firewall-rules create allow-node-svc-tcp-3000 \
     --network default \
     --action allow \
     --direction ingress \
-    --rules tcp:9292 \
+    --rules tcp:3000 \
     --source-ranges 0.0.0.0/0
 ```
 
-Access the application in your browser by its public IP (don't forget to specify the port 9292).
 
 Open another terminal and run the following command to get a public IP of the VM:
 
 ```bash
-$ gcloud --format="value(networkInterfaces[0].accessConfigs[0].natIP)" compute instances describe raddit-instance
+$ gcloud --format="value(networkInterfaces[0].accessConfigs[0].natIP)" compute instances describe node-svc
 ```
+
+Access the application in your browser by its public IP (don't forget to specify the port 3000).
+
 
 ## Add other GCP resources into Terraform
 
@@ -186,24 +189,24 @@ First, delete the SSH project key and firewall rule:
 
 ```bash
 $ gcloud compute project-info remove-metadata --keys=ssh-keys
-$ gcloud compute firewall-rules delete allow-raddit-tcp-9292
+$ gcloud compute firewall-rules delete allow-node-svc-tcp-3000
 ```
 
-Make sure that your application became inaccessible via port 9292 and SSH connection with a private key of `raddit-user` fails.
+Make sure that your application became inaccessible via port 3000 and SSH connection with a private key of `node-user` fails.
 
 Then add appropriate resources into `main.tf` file. Your final version of `main.tf` file should look similar to this (change the ssh key file path, if necessary):
 
 
-```
-resource "google_compute_instance" "raddit" {
-  name         = "raddit-instance"
-  machine_type = "n1-standard-1"
+```bash
+resource "google_compute_instance" "node-svc" {
+  name         = "node-svc"
+  machine_type = "f1-micro"
   zone         = "us-central1-c"
 
   # boot disk specifications
   boot_disk {
     initialize_params {
-      image = "raddit-base" // use image built with Packer
+      image = "node-svc-base" // use image built with Packer
     }
   }
 
@@ -214,18 +217,18 @@ resource "google_compute_instance" "raddit" {
   }
 }
 
-resource "google_compute_project_metadata" "raddit" {
+resource "google_compute_project_metadata" "node-svc" {
   metadata = {
-    ssh-keys = "raddit-user:${file("~/.ssh/raddit-user.pub")}" // path to ssh key file
+    ssh-keys = "node-user:${file("~/.ssh/node-user.pub")}" // path to ssh key file
   }
 }
 
-resource "google_compute_firewall" "raddit" {
-  name    = "allow-raddit-tcp-9292"
+resource "google_compute_firewall" "node-svc" {
+  name    = "allow-node-svc-tcp-3000"
   network = "default"
   allow {
     protocol = "tcp"
-    ports    = ["9292"]
+    ports    = ["3000"]
   }
   source_ranges = ["0.0.0.0/0"]
 }
@@ -237,54 +240,65 @@ Tell Terraform to apply the changes to bring the actual infrastructure state to 
 $ terraform apply
 ```
 
-Verify that the application became accessible again on port 9292 and SSH connection with a private key works.
+Using the same techniques as above, verify that the application became accessible again on port 3000 (locally and remotely) and SSH connection with a private key works. Here's a new way to check it from the Google Cloud Shell (you don't ssh into the VM):
+
+```bash
+$ curl $INSTANCE_IP:3000
+```
 
 ## Create an output variable
 
-Remember how we often had to use a gcloud command like this to retrive a public IP address of a VM?
+We have frequntly used this gcloud command to retrieve a public IP address of a VM:
 
 ```bash
-$ gcloud --format="value(networkInterfaces[0].accessConfigs[0].natIP)" compute instances describe raddit-instance
+$ gcloud --format="value(networkInterfaces[0].accessConfigs[0].natIP)" compute instances describe node-svc 
 ```
 
 We can tell Terraform to provide us this information using [output variables](https://www.terraform.io/intro/getting-started/outputs.html).
 
 Create another configuration file inside `terraform` directory and call it `outputs.tf`. Put the following content in it:
 
-```
-output "raddit_public_ip" {
-  value = "${google_compute_instance.raddit.network_interface.0.access_config.0.nat_ip}"
+```json
+output "node_svc_public_ip" {
+  value = "${google_compute_instance.node-svc.network_interface.0.access_config.0.nat_ip}"
 }
 ```
 
-Run terraform apply again:
+Run terraform apply again, this time with auto approve:
 
 ```bash
-$ terraform apply
+$ terraform apply -auto-approve
+
+google_compute_instance.node-svc: Refreshing state... [id=node-svc]
+google_compute_firewall.node-svc: Refreshing state... [id=allow-node-svc-tcp-3000]
+google_compute_project_metadata.node-svc: Refreshing state... [id=proven-sum-252123]
+Apply complete! Resources: 0 added, 0 changed, 0 destroyed.
+Outputs:
+node_svc_public_ip = 34.71.90.74
 ```
 
-You should see the public IP of the VM we created.
+Couple of things to notice here.   First, we did not destroy anything, so terraform refreshes - it confirms that configurations are still as specified. During this Terraform run, no resources have been created or changed, which means that the actual state of our infrastructure already meets the requirements of a desired state. 
 
-Also note, that during this Terraform run, no resources have been created or changed, which means that the actual state of our infrastructure already meets the requirements of a desired state.
+Secondly, under "Outputs:", you should see the public IP of the VM we created.
 
 ## Save and commit the work
 
-Save and commit the `terraform` folder created in this lab into your `iac-tutorial` repo.
+Save and commit the `05-terraform` folder created in this lab into your `iac-tutorial` repo.
 
 ## Conclusion
 
-In this lab, you saw in its most obvious way the application of Infrastructure as Code practice.
+In this lab, you saw a state of the art the application of Infrastructure as Code practice.
 
-We used `code` (Terraform configuration syntax) to describe the `desired state` of the infrastructure. Then we told Terraform to bring the actual state of the infrastructure to the desired state we described.
+We used *code* (Terraform configuration syntax) to describe the *desired state* of the infrastructure. Then we told Terraform to bring the actual state of the infrastructure to the desired state we described.
 
-With this approach, Terraform configuration becomes `a single source of truth` about the current state of your infrastructure. Moreover, the infrastructure is described as code, so we can apply to it the same practices we commonly use in development such as keeping the code in source control, use peer reviews for making changes, etc.
+With this approach, Terraform configuration becomes *a single source of truth* about the current state of your infrastructure. Moreover, the infrastructure is described as code, so we can apply to it the same practices we commonly use in development such as keeping the code in source control, use peer reviews for making changes, etc.
 
 All of this helps us get control over even the most complex infrastructure.
 
 Destroy the resources created by Terraform and move on to the next lab.
 
 ```bash
-$ terraform destroy
+$ terraform destroy -auto-approve
 ```
 
 Next: [Ansible](06-ansible.md)
