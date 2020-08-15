@@ -19,7 +19,7 @@ First thing we will do is to provision a virtual machine (VM) inside GCP for run
 Use the following gcloud command in your terminal to launch a VM with Ubuntu 16.04 distro:
 
 ```bash
-$ gcloud compute instances create node-svc-instance \
+$ gcloud compute instances create  node-svc\
     --image-family ubuntu-1604-lts \
     --image-project ubuntu-os-cloud \
     --boot-disk-size 10GB \
@@ -71,7 +71,7 @@ To start the application, you need to first configure the environment for runnin
 Connect to the started VM via SSH using the following two commands:
 
 ```bash
-$ INSTANCE_IP=$(gcloud --format="value(networkInterfaces[0].accessConfigs[0].natIP)" compute instances describe node-svc-instance)
+$ INSTANCE_IP=$(gcloud --format="value(networkInterfaces[0].accessConfigs[0].natIP)" compute instances describe node-svc)
 $ ssh node-user@${INSTANCE_IP}
 ```
 
@@ -114,6 +114,8 @@ $ npm install express
 ```
 
 ## Start the Application
+
+Look at the server.js file (`cat`). We will discuss in class. 
 
 Start the Node web server: 
 
@@ -162,7 +164,7 @@ Now that you've got the idea of what sort of steps you have to take to deploy yo
 Destroy the current VM and firewall rule and move to the next step:
 
 ```bash
-$ gcloud compute instances delete -q node-svc-instance
+$ gcloud compute instances delete -q node-svc
 $ gcloud compute firewall-rules delete -q allow-node-svc-tcp-9292 
 ```
 

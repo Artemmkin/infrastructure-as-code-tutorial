@@ -1,6 +1,6 @@
 # Scripts
 
-In the previous lab, you deployed the [raddit](https://github.com/Artemmkin/raddit) application by connecting to a VM via SSH and running commands in the terminal one by one. In this lab, we'll try to automate this process a little by using `scripts`.
+In the previous lab, you deployed the [node-svc](https://github.com/dm-academy/node-svc) application by connecting to a VM via SSH and running commands in the terminal one by one. In this lab, we'll try to automate this process a little by using `scripts`.
 
 ## Intro
 
@@ -28,14 +28,14 @@ Create a directory for this lab:
 
 ```bash
 $ cd my-iac-repo
-$ mkdir script
+$ mkdir 02-script
 ```
 
 To push your changes up to Github: 
 
 ```bash
 $ git add . -A
-$ git commit -m "some message"
+$ git commit -m "first lab 02 commit" # should be relevant to the changes you made
 $ git push origin master
 ```
 
@@ -45,48 +45,45 @@ Always issue these commands several times during each session.
 
 We can automate the process of creating the VM and the firewall rule. 
 
-In the `script` directory create a directory `provision`. 
-
-Create a script `provision.sh`: 
+In the `script` directory create a script `provision.sh`: 
 
 ```bash
 #!/bin/bash
 # add new VM
-gcloud compute instances create raddit-instance-3 \
+gcloud compute instances create node-svc \
     --image-family ubuntu-1604-lts \
     --image-project ubuntu-os-cloud \
     --boot-disk-size 10GB \
     --machine-type n1-standard-1
 
 # add firewall rule
-gcloud compute firewall-rules create allow-raddit-tcp-9292 \
+gcloud compute firewall-rules create allow-node-svc-3000 \
     --network default \
     --action allow \
     --direction ingress \
-    --rules tcp:9292 \
+    --rules tcp:3000 \
     --source-ranges 0.0.0.0/0
 ```
 
 Run it in the Google Cloud Shell: 
 
 ```bash
-$ chmod +x provision/provision.sh
-$ ./provision/provision.sh
+$ chmod +x provision.sh  # changing permissions 
+$ ./provision.sh # you have to include the './'
 ```
 
 You should see results similar to: 
 
 ```bash
 WARNING: You have selected a disk size of under [200GB]. This may result in poor I/O performance. For more information, see: https://developers.google.com/compute/docs/disks#performance.
-Created [https://www.googleapis.com/compute/v1/projects/proven-sum-252123/zones/us-central1-c/instances/raddit-instance-3].
-NAME               ZONE           MACHINE_TYPE   PREEMPTIBLE  INTERNAL_IP  EXTERNAL_IP   STATUS
-raddit-instance-3  us-central1-c  n1-standard-1               10.128.0.58  34.71.103.20  RUNNING
-Creating firewall...⠹Created [https://www.googleapis.com/compute/v1/projects/proven-sum-252123/global/firewalls/allow-raddit-tcp-9292].
+Created [https://www.googleapis.com/compute/v1/projects/proven-sum-252123/zones/us-central1-c/instances/node-svc].
+NAME      ZONE           MACHINE_TYPE   PREEMPTIBLE  INTERNAL_IP    EXTERNAL_IP  STATUS
+node-svc  us-central1-c  n1-standard-1               10.128.15.202  34.69.206.6  RUNNING
+Creating firewall...⠹Created [https://www.googleapis.com/compute/v1/projects/proven-sum-252123/global/firewalls/allow-node-svc-3000].
 Creating firewall...done.
-NAME                   NETWORK  DIRECTION  PRIORITY  ALLOW     DENY  DISABLED
-allow-raddit-tcp-9292  default  INGRESS    1000      tcp:9292        False
+NAME                 NETWORK  DIRECTION  PRIORITY  ALLOW     DENY  DISABLED
+allow-node-svc-3000  default  INGRESS    1000      tcp:3000        False
 ```
-
 
 ## Configuration script
 
@@ -94,77 +91,54 @@ Before we can run our application, we need to create a running environment for i
 
 We are going to use the same commands we used before to do that, but this time, instead of running commands one by one, we'll create a `bash script` to save us some struggle.
 
-In the `script` directory create a directory `config`.
-
-Create a bash script to install Ruby, Bundler and MongoDB, and copy a systemd unit file for the application.
-
-Save it to the `configuration.sh` file inside created `config` directory:
+In the `02-script` directory create a bash script `config.sh` to install node, npm, express, and git, and download the app and initialize node.
 
 ```bash
 #!/bin/bash
-set -e
+set -e  # exit immediately if anything returns non-zero. See https://www.javatpoint.com/linux-set-command
 
-echo "  ----- install ruby and bundler -----  "
+echo "  ----- install node, npm, git -----  "
 apt-get update
-apt-get install -y ruby-full build-essential
-gem install --no-rdoc --no-ri bundler
-
-echo "  ----- install mongodb -----  "
-apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv EA312927
-echo "deb http://repo.mongodb.org/apt/ubuntu xenial/mongodb-org/3.2 multiverse" > /etc/apt/sources.list.d/mongodb-org-3.2.list
-apt-get update
-apt-get install -y mongodb-org --allow-unauthenticated
-
-echo "  ----- start mongodb -----  "
-systemctl start mongod
-systemctl enable mongod
-
-echo "  ----- copy unit file for application -----  "
-wget https://gist.githubusercontent.com/Artemmkin/ce82397cfc69d912df9cd648a8d69bec/raw/7193a36c9661c6b90e7e482d256865f085a853f2/raddit.service
-mv raddit.service /etc/systemd/system/raddit.service
+apt-get install -y nodejs npm git
 ```
 
 ## Deployment script
 
-Create a script for copying the application code from GitHub repository, installing dependent gems and starting it.
-
-Save it into `deploy.sh` file inside `config` directory:
+Create a script for copying the application code from GitHub repository, initializing NPM and downloading express.js, and starting the server. Save it as `deploy.sh` inside `02-script` directory:
 
 ```bash
 #!/bin/bash
 set -e
 
-echo "  ----- clone application repository -----  "
-git clone https://github.com/Artemmkin/raddit.git
+echo "  ----- download, initialize, and run app -----  "
+git clone https://github.com/dm-academy/node-svc-v1
+cd node-svc-v1
+git checkout 02
+npm install
+npm install express 
+nodejs server.js &
 
-echo "  ----- install dependent gems -----  "
-cd ./raddit
-sudo bundle install
-
-echo "  ----- start the application -----  "
-sudo systemctl start raddit
-sudo systemctl enable raddit
 ```
 
 ## Run the scripts
 
-Copy the `config` directory to the created VM (you need to be in the `scripts` directory, or else make adjustments to your paths:
+Copy the `02-script` directory to the created VM:
 
 ```bash
-$ INSTANCE_IP=$(gcloud --format="value(networkInterfaces[0].accessConfigs[0].natIP)" compute instances describe raddit-instance-3)
-$ scp -r ./config raddit-user@${INSTANCE_IP}:/home/raddit-user
+$ INSTANCE_IP=$(gcloud --format="value(networkInterfaces[0].accessConfigs[0].natIP)" compute instances describe node-svc)
+$ scp -r . node-user@${INSTANCE_IP}:/home/node-user
 ```
 NOTE: If you get an `offending ECDSA key` error, use the suggested removal command. 
 
 NOTE: If you get the error `Permission denied (publickey).`, this probably means that your ssh-agent no longer has the raddit-user private key added. This easily happens if the Google Cloud Shell goes to sleep and wipes out your session. Check via issuing `ssh-add -l`. 
 
 If you get a message to the effect that your agent is not running, type ``eval `ssh-agent` `` and then `ssh-add -l`.
-You should see something like `2048 SHA256:bII5VsQY3fCWXEai0lUeChEYPaagMXun3nB9U2eoUEM /home/betz4871/.ssh/raddit-user (RSA)`. If you do not, re-issue the command `ssh-add ~/.ssh/raddit-user` and re-confirm with `ssh-add -l`.
+You should see something like `2048 SHA256:bII5VsQY3fCWXEai0lUeChEYPaagMXun3nB9U2eoUEM /home/betz4871/.ssh/node-user (RSA)`. If you do not, re-issue the command `ssh-add ~/.ssh/node-user` and re-confirm with `ssh-add -l`.
 
 
 Connect to the VM via SSH:
 ```bash
-$ ssh raddit-user@${INSTANCE_IP}
+$ ssh node-user@${INSTANCE_IP}
 ```
 
 Run the scripts:
@@ -176,12 +150,12 @@ $ ./config/deploy.sh
 
 ## Access the Application
 
-Access the application in your browser by its public IP (don't forget to specify the port 9292).
+Access the application in your browser by its public IP (don't forget to specify the port 3000).
 
 Open another terminal and run the following command to get a public IP of the VM:
 
 ```bash
-$ gcloud --format="value(networkInterfaces[0].accessConfigs[0].natIP)" compute instances describe raddit-instance-3
+$ gcloud --format="value(networkInterfaces[0].accessConfigs[0].natIP)" compute instances describe node-instance
 ```
 
 ## Destroy (de-provision) the resources by script
@@ -190,15 +164,14 @@ In the `provision` directory create a script `deprovision.sh`.
 
 ```bash
 #!/bin/bash
-gcloud compute instances delete -q raddit-instance-3
-gcloud compute firewall-rules delete -q allow-raddit-tcp-9292 
+gcloud compute instances delete -q node-instance
+gcloud compute firewall-rules delete -q allow-node-tcp-3000
 ```
 
 Set permissions correctly (see previous) and execute. You should get results like:
 
 ```bash
-Deleted [https://www.googleapis.com/compute/v1/projects/proven-sum-252123/zones/us-central1-c/instances/raddit-instance-3].
-Deleted [https://www.googleapis.com/compute/v1/projects/proven-sum-252123/global/firewalls/allow-raddit-tcp-9292].
+Xxxxxx
 ```
 
 ## Save and commit the work
