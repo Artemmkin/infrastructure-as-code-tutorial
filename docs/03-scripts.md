@@ -16,7 +16,7 @@ The most obvious way for improvement is using Bash scripts which allow us to run
 
 Starting from this lab, we're going to use a git repo for saving all the work done in this tutorial.
 
-Go to your Github account and create a new repository called my-iac-repo. No README or .gitignore. Copy the URL. 
+Go to your Github account and create a new repository called iac-repo. No README or .gitignore. Copy the URL. 
 
 Clone locally: 
 
@@ -27,7 +27,7 @@ $ git clone <Github URL of your new repository>
 Create a directory for this lab:
 
 ```bash
-$ cd my-iac-repo
+$ cd iac-repo
 $ mkdir 02-script
 ```
 
@@ -57,7 +57,7 @@ gcloud compute instances create node-svc \
     --machine-type n1-standard-1
 
 # add firewall rule
-gcloud compute firewall-rules create allow-node-svc-3000 \
+gcloud compute firewall-rules create allow-node-svc-tcp-3000 \
     --network default \
     --action allow \
     --direction ingress \
@@ -85,13 +85,13 @@ NAME                 NETWORK  DIRECTION  PRIORITY  ALLOW     DENY  DISABLED
 allow-node-svc-3000  default  INGRESS    1000      tcp:3000        False
 ```
 
-## Configuration script
+## Deployment script
 
-Before we can run our application, we need to create a running environment for it by installing dependent packages and configuring the OS.
+Before we can run our application, we need to create a running environment for it by installing dependent packages and configuring the OS. Then we copy the application, initialize NPM and download express.js, and start the server.
 
 We are going to use the same commands we used before to do that, but this time, instead of running commands one by one, we'll create a `bash script` to save us some struggle.
 
-In the `02-script` directory create a bash script `config.sh` to install node, npm, express, and git, and download the app and initialize node.
+In the `02-script` directory create a bash script `deploy.sh` to install node, npm, express, and git, and download the app and initialize node.
 
 ```bash
 #!/bin/bash
@@ -100,15 +100,6 @@ set -e  # exit immediately if anything returns non-zero. See https://www.javatpo
 echo "  ----- install node, npm, git -----  "
 apt-get update
 apt-get install -y nodejs npm git
-```
-
-## Deployment script
-
-Create a script for copying the application code from GitHub repository, initializing NPM and downloading express.js, and starting the server. Save it as `deploy.sh` inside `02-script` directory:
-
-```bash
-#!/bin/bash
-set -e
 
 echo "  ----- download, initialize, and run app -----  "
 git clone https://github.com/dm-academy/node-svc-v1
@@ -122,17 +113,25 @@ nodejs server.js &
 
 ## Run the scripts
 
-Copy the `02-script` directory to the created VM:
+Copy the `deploy.sh` script to the created VM:
 
 ```bash
 $ INSTANCE_IP=$(gcloud --format="value(networkInterfaces[0].accessConfigs[0].natIP)" compute instances describe node-svc)
-$ scp -r . node-user@${INSTANCE_IP}:/home/node-user
+$ scp -r deploy.sh node-user@${INSTANCE_IP}:/home/node-user
 ```
+
+If sucessful, you should see something like: 
+
+```bash
+deploy.sh                                                           100%  307   408.3KB/s   00:00    
+```
+
 NOTE: If you get an `offending ECDSA key` error, use the suggested removal command. 
 
-NOTE: If you get the error `Permission denied (publickey).`, this probably means that your ssh-agent no longer has the raddit-user private key added. This easily happens if the Google Cloud Shell goes to sleep and wipes out your session. Check via issuing `ssh-add -l`. 
+NOTE: If you get the error `Permission denied (publickey).`, this probably means that your ssh-agent no longer has the node-user private key added. This easily happens if the Google Cloud Shell goes to sleep and wipes out your session. Check via issuing `ssh-add -l`. 
 
 If you get a message to the effect that your agent is not running, type ``eval `ssh-agent` `` and then `ssh-add -l`.
+
 You should see something like `2048 SHA256:bII5VsQY3fCWXEai0lUeChEYPaagMXun3nB9U2eoUEM /home/betz4871/.ssh/node-user (RSA)`. If you do not, re-issue the command `ssh-add ~/.ssh/node-user` and re-confirm with `ssh-add -l`.
 
 
@@ -143,11 +142,19 @@ $ ssh node-user@${INSTANCE_IP}
 
 Run the scripts:
 ```bash
-$ chmod +x ./config/*.sh
-$ sudo ./config/configuration.sh
-$ ./config/deploy.sh
+$ chmod +x deploy.sh
+$ sudo ./deploy.sh
 ```
 
+To test that the server is running locally, type:
+```bash
+$ curl localhost:3000
+```
+You should receive this:
+
+```bash
+Successful request.
+```
 ## Access the Application
 
 Access the application in your browser by its public IP (don't forget to specify the port 3000).
@@ -164,20 +171,19 @@ In the `provision` directory create a script `deprovision.sh`.
 
 ```bash
 #!/bin/bash
-gcloud compute instances delete -q node-instance
-gcloud compute firewall-rules delete -q allow-node-tcp-3000
+gcloud compute instances delete -q node-svc
+gcloud compute firewall-rules delete -q allow-node-svc-tcp-3000
 ```
 
 Set permissions correctly (see previous) and execute. You should get results like:
 
 ```bash
-Xxxxxx
-```
+Deleted [https://www.googleapis.com/compute/v1/projects/proven-sum-252123/zones/us-central1-c/instances/node-svc].
+Deleted [https://www.googleapis.com/compute/v1/projects/proven-sum-252123/global/firewalls/allow-node-svc-tcp-3000].```
 
 ## Save and commit the work
 
 Save and commit the scripts created in this lab into your `iac-tutorial` repo.
-
 
 ## Conclusion
 
