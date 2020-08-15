@@ -15,19 +15,19 @@ Remember, that each time we want to deploy an application, we have to `provision
 We do it via a `gcloud` command like this:
 
 ```bash
-$ gcloud compute instances create raddit-instance-4 \
-    --image-family raddit-base \
+$ gcloud compute instances create node-svc \
+    --image-family node-svc-base \
     --boot-disk-size 10GB \
-    --machine-type n1-standard-1
+    --machine-type f1-micro
 ```
 
-At this stage, it doesn't seem like there are any problems with this. But, in fact, there is.
+At this stage, it doesn't seem like there are any problems with this. But, in fact, there are.
 
-Infrastructure for running your services and applications could be huge. You might have tens, hundreds or even thousands of virtual machines, hundreds of firewall rules, multiples VPC networks, and load balancers. In addition to that, the infrastructure could be split between multiple teams and managed separately. Such infrastructure looks very complex and yet should be run and managed in a consistent and predictable way.
+Infrastructure for running your services and applications could be huge. You might have tens, hundreds or even thousands of virtual machines, hundreds of firewall rules, multiple VPC networks and load balancers. Additionally, the infrastructure could be split between multiple teams. Such infrastructure looks, and is, very complex and yet should be run and managed in a consistent and predictable way.
 
-If we create and change infrastructure components using gcloud CLI tool or Web UI Console, over time we won't be able to describe exactly in which `state` our infrastructure is in right now, meaning `we lose control over it`.
+If we create and change infrastructure components using the Web User Interface (UI) Console or even the gcloud command ine interface (CLI) tool, over time we won't be able to describe exactly in which `state` our infrastructure is in right now, meaning `we lose control over it`.
 
-This happens because you tend to forget what changes you've made a few months ago and why you did it. If multiple people are managing infrastructure, this makes things even worse, because you can't know what changes other people are making even though your communication inside the team could be great.
+This happens because you tend to forget what changes you've made a few months ago and why you made them. If multiple people across multiple teams are managing infrastructure, this makes things even worse.
 
 So we see here 2 clear problems:
 
@@ -50,28 +50,28 @@ $ terraform -v
 
 ## Infrastructure as Code project
 
-Create a new directory called `terraform` inside your `iac-tutorial` repo, which we'll use to save the work done in this lab.
+Create a new directory called `05-terraform` inside your `iac-tutorial` repo, which we'll use to save the work done in this lab.
 
 ## Describe VM instance
 
 _Terraform allows you to describe the desired state of your infrastructure and makes sure your desired state meets the actual state._
 
-Terraform uses [**resources**](https://www.terraform.io/docs/configuration/resources.html) to describe different infrastructure components. If you want to use Terraform to manage some infrastructure component, you should first make sure there is a resource for that component for that particular platform.
+Terraform uses [**resources**](https://www.terraform.io/docs/configuration/resources.html) to describe different infrastructure components. If you want to use Terraform to manage an infrastructure component, you should first make sure there is a resource for that component for that particular platform.
 
 Let's use Terraform syntax to describe a VM instance that we want to be running.
 
-Create a Terraform configuration file called `main.tf` inside the `terraform` directory with the following content:
+Create a Terraform configuration file called `main.tf` inside the `05-terraform` directory with the following content:
 
 ```
-resource "google_compute_instance" "raddit" {
-  name         = "raddit-instance"
-  machine_type = "n1-standard-1"
+resource "google_compute_instance" "node-svc" {
+  name         = "node-svc"
+  machine_type = "f1-micro"
   zone         = "us-central1-c"
 
   # boot disk specifications
   boot_disk {
     initialize_params {
-      image = "raddit-base" // use image built with Packer
+      image = "node-svc-base" // use image built with Packer
     }
   }
 
@@ -98,12 +98,10 @@ Create another file inside `terraform` folder and call it `providers.tf`. Put pr
 ```
 provider "google" {
   version = "~> 2.5.0"
-  project = "infrastructure-as-code"
+  project = "YOU MUST PUT YOUR PROJECT NAME HERE"
   region  = "us-central1-c"
 }
 ```
-
-Note the `region` value, this is where terraform will provision resources (you may wish to change it).
 
 Make sure to change the `project` value in provider's configuration above to your project's ID. You can get your default project's ID by running the command:
 
@@ -114,7 +112,6 @@ $ gcloud config list project
 Now run the `init` command inside `terraform` directory to download the provider:
 
 ```bash
-$ cd ./terraform
 $ terraform init
 ```
 
