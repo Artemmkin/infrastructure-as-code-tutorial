@@ -1,8 +1,8 @@
 # Terraform
 
-In the previous lab, you used Packer to make your system configuration faster and more reliable. But we still have a lot to improve.
+In the previous lab, you used scripts to make your system configuration faster and more reliable. But we still have a lot to improve.
 
-In this lab, we're going to learn about another IaC tool by HashiCorp called [Terraform](https://www.terraform.io/).
+In this lab, we're going to learn about the IaC tool by HashiCorp called [Terraform](https://www.terraform.io/).
 
 ## Intro
 
@@ -16,7 +16,7 @@ We do it via a `gcloud` command like this:
 
 ```bash
 $ gcloud compute instances create node-svc \
-    --image-family node-svc-base \
+    --image-family ubuntu-minimal-2004-lts \
     --boot-disk-size 10GB \
     --machine-type f1-micro
 ```
@@ -136,7 +136,7 @@ We did provisioning via Terraform, but we still need to install and start our ap
 
 ```bash
 $ INSTANCE_IP=$(gcloud --format="value(networkInterfaces[0].accessConfigs[0].natIP)" compute instances describe node-svc) # get IP of VM
-$ scp -r install.sh node-user@${INSTANCE_IP}:/home/node-user # copy install script
+$ scp -r ../03-script/install.sh node-user@${INSTANCE_IP}:/home/node-user # copy install script
 $ rsh ${INSTANCE_IP} -l node-user chmod +x /home/node-user/install.sh # set permissions
 $ rsh ${INSTANCE_IP} -l node-user /home/node-user/install.sh # install app
 $ rsh ${INSTANCE_IP} -l node-user sudo nodejs /home/node-user/node-svc-v1/server.js & # run app

@@ -45,7 +45,7 @@ Create a new directory called `06-ansible` inside your `iac-tutorial` repo, whic
 
 ## Provision compute resources
 
-Start a VM and create other GCP resources for running your application applying Terraform configuration you wrote in the previous lab:
+Start a VM and create other GCP resources for running your application applying Terraform configuration you wrote in the previous lab (destroy first if you have some still running):
 
 ```bash
 $ cd ./05-terraform  # adapt this command as necessary to get to the directory
@@ -103,7 +103,7 @@ Let's create a file called `deploy.yml` ("deploy" including both installation an
     - name: NPM install express and initialize app
     # see https://docs.ansible.com/ansible/latest/modules/npm_module.html
       npm:
-        name: express
+        name: express 
         global: yes
 
     - name: Install packages based on package.json.

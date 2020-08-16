@@ -52,7 +52,7 @@ In the `script` directory create a script `provision.sh`:
 #!/bin/bash
 # add new VM
 gcloud compute instances create node-svc \
-    --image-family ubuntu-1604-lts \
+    --image-family ubuntu-minimal-2004-lts \
     --image-project ubuntu-os-cloud \
     --boot-disk-size 10GB \
     --machine-type f1-micro
@@ -151,7 +151,7 @@ Have a look at what's in the directory (use `ls` and `cat`). Do you understand e
 
 Run the script and launch the server:
 ```bash
-$ chmod +x *install*.sh
+$ chmod +x *.sh
 $ sudo ./config.sh && ./install.sh # running 2 commands on one line
 $ sudo nodejs node-svc-v1/server.js &
 ```

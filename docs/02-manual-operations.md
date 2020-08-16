@@ -20,7 +20,7 @@ Use the following gcloud command in your terminal to launch a VM with Ubuntu 16.
 
 ```bash
 $ gcloud compute instances create  node-svc\
-    --image-family ubuntu-1604-lts \
+    --image-family ubuntu-minimal-2004-lts  \
     --image-project ubuntu-os-cloud \
     --boot-disk-size 10GB \
     --machine-type f1-micro
@@ -78,19 +78,19 @@ $ ssh node-user@${INSTANCE_IP}
 Install Node and npm:
 
 ```bash
-$ sudo apt-get update
-$ sudo apt-get install nodejs npm 
+$       
+$ sudo apt-get install -y nodejs npm 
 ```
 
 Check the installed version of Node:
 
 ```bash
-$ nodejs -v
+$ node -v
 ```
 
 Install `git`:
 ```bash
-$ sudo apt install git
+$ sudo apt -y install git
 ```
 
 Clone the application repo into the home directory of `node-user` user (reminder, how do you clone to the right location?):
@@ -98,7 +98,7 @@ Clone the application repo into the home directory of `node-user` user (reminder
 ```bash
 $ git clone https://github.com/dm-academy/node-svc-v1
 ```
-Navigate to the repo and check out the 02 branch (matching this lesson)
+Navigate to the repo (`cd node-svc-v1`) and check out the 02 branch (matching this lesson)
 
 ```bash
 $ git checkout 02

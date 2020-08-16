@@ -10,11 +10,11 @@ Remember how in the second lab we had to make install nodejs, npm, and even git 
 
 Imagine how nice it would be to have required packages like nodejs and npm preinstalled on the VM we provision, or have necessary configuration files come with the image, too. This would require even less time and effort from us to configure the system and run our application.
 
-Luckily, we can create custom machine images with required configuration and software installed using Packer. Let's check it out.
+Luckily, we can create custom machine images with required configuration and software installed using Packer, an IaC tool by Hashicorp. Let's check it out.
 
 ## Install Packer
 
-[Download](https://www.packer.io/downloads.html) and install Packer onto your system (this means the Google Cloud Shell). 
+[Download](https://www.packer.io/downloads.html) and install Packer onto your system (this means the Google Cloud Shell). You will need to figure this out. 
 
 If you have issues, consult [this script](https://github.com/dm-academy/iac-tutorial-rsrc/blob/master/packer/install-packer.sh). 
 
@@ -46,8 +46,8 @@ Create a `node-svc-base-image.json` file inside the `packer` directory with the 
       "project_id": "YOUR PROJECT HERE. YOU MUST CHANGE THIS",
       "zone": "us-central1-c",
       "machine_type": "f1-micro",
-      "source_image_family": "ubuntu-1604-lts",
-      "image_name": "node-svc-base-{{isotime `20200901-000001`}}",
+      "source_image_family": "ubuntu-minimal-2004-lts",
+      "image_name": "node-svc-base-{{isotime \"2006-01-02 03:04:05\"}}",
       "image_family": "node-svc-base",
       "image_description": "Ubuntu 16.04 with git, nodejs, npm preinstalled",
       "ssh_username": "node-user"
@@ -129,12 +129,11 @@ $ gcloud compute instances create node-svc \
 Copy the installation script to the VM:
 
 $ INSTANCE_IP=$(gcloud --format="value(networkInterfaces[0].accessConfigs[0].natIP)" compute instances describe node-svc)
-$ scp -r install.sh node-user@${INSTANCE_IP}:/home/node-user
+$ scp -r ../03-script/install.sh node-user@${INSTANCE_IP}:/home/node-user
 
 Connect to the VM via SSH:
 
 ```bash
-$ INSTANCE_IP=$(gcloud --format="value(networkInterfaces[0].accessConfigs[0].natIP)" compute instances describe node-svc)
 $ ssh node-user@${INSTANCE_IP}
 ```
 
@@ -142,24 +141,23 @@ NOTE: If you get an offending ECDSA key error, use the suggested removal command
 
 NOTE: If you get the error `Permission denied (publickey).`, this probably means that your ssh-agent no longer has the node-user private key added. This easily happens if the Google Cloud Shell goes to sleep and wipes out your session. Check via issuing `ssh-add -l`. You should see something like `2048 SHA256:bII5VsQY3fCWXEai0lUeChEYPaagMXun3nB9U2eoUEM /home/betz4871/.ssh/node-user (RSA)`. If you do not, re-issue the command `ssh-add ~/.ssh/node-user` and re-confirm with `ssh-add -l`. 
 
-Verify git, nodejs, npm, and the node-svc app are installed. Do you understand how they got there? (Your results may be slightly different, but if you get errors, investigate or ask for help):
+Verify git, nodejs, and npmare installed. Do you understand how they got there? (Your results may be slightly different, but if you get errors, investigate or ask for help):
 
 ```bash
-$ git --version
-git version 2.7.4
-$ nodejs -v
-v4.2.6
-$ npm -v
-3.5.2
-$ ls node-svc-v1/
-LICENSE  node_modules  package.json  README.md  run.sh  server.js  test.sh
+node-user@node-svc:~$ npm -v
+6.14.4
+node-user@node-svc:~$ node -v
+v10.19.0
+node-user@node-svc:~$ git --version
+git version 2.25.1
 ```
 
 
-
-Run server:
+Run the installation script, and then the server:
 
 ```bash
+$ chmod +x *.sh
+$ sudo ./install.sh 
 $ sudo nodejs node-svc-v1/server.js &
 ```
 

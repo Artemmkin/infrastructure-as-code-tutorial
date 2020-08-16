@@ -30,7 +30,7 @@ Verify that the version of Docker Engine is => 17.09.0:
 $ docker -v
 ```
 
-## Create Dockerfile
+## (FOR ALL) Create Dockerfile
 
 You describe a container image that you want to create in a special file called **Dockerfile**.
 
@@ -43,37 +43,34 @@ Dockerfile contains `instructions` on how the image should be built. Here are so
 * `WORKDIR` changes the working directory of the container to a specified path. It basically works like a `cd` command on Linux.
 * `CMD` sets a default command, which will be executed when a container starts. This should be a command to start your application.
 
-Let's use these instructions to create a Docker container image for our raddit application.
+Let's use these instructions to create a Docker container image for our node-svc application.
 
-Inside your `my-iac-tutorial` directory, create a text file called `Dockerfile` with the following content:
+Inside your `my-iac-tutorial` directory, create a directory called `08-docker`, and in it a text file called `Dockerfile` with the following content:
 
 ```
-# Use base image with Ruby installed
-FROM ruby:2.3
-
-# install required system packages
-RUN apt-get update -qq && \
-    apt-get install -y build-essential
-
-# create application directory and install dependencies
-ENV APP_HOME /app
-RUN mkdir $APP_HOME
-WORKDIR $APP_HOME
-COPY raddit-app/Gemfile* $APP_HOME/
-RUN bundle install
-
-# Copy the application code to the container
-ADD raddit-app/ $APP_HOME
-# Run "puma" command on container's start
-CMD ["puma"]
+FROM node:11
+# Create app directory
+WORKDIR /app
+# Install app dependencies
+# A wildcard is used to ensure both package.json AND package-lock.json are copied
+# where available (npm@5+)
+COPY package*.json ./
+RUN npm install
+RUN npm install express
+# If you are building your code for production
+# RUN npm ci --only=production
+# Bundle app source
+COPY . /app
+EXPOSE 3000
+CMD [ "node", "server.js" ]
 ```
 
 This Dockerfile repeats the steps that we did multiple times by now to configure a running environment for our application and run it.
 
-We first choose an image that already contains Ruby of required version:
+We first choose an image that already contains Node of required version:
 ```
 # Use base image with Ruby installed
-FROM ruby:2.3
+FROM node:11
 ```
 
 The base image is downloaded from Docker official registry (storage of images) called [Docker Hub](https://hub.docker.com/).
@@ -81,39 +78,38 @@ The base image is downloaded from Docker official registry (storage of images) c
 We then install required system packages and application dependencies:
 
 ```
-# install required system packages
-RUN apt-get update -qq && \
-    apt-get install -y build-essential
-
-# create application home directory and install dependencies
-ENV APP_HOME /app
-RUN mkdir $APP_HOME
-WORKDIR $APP_HOME
-COPY raddit-app/Gemfile* $APP_HOME/
-RUN bundle install
+# Install app dependencies
+# A wildcard is used to ensure both package.json AND package-lock.json are copied
+# where available (npm@5+)COPY package*.json ./
+RUN npm install
+RUN npm install express
 ```
 
-Then we copy the directory with application code and specify a default command that should be run when a container from this image starts:
+Then we copy the application itself. 
 
 ```
-# Copy the application code to the container
-ADD raddit-app/ $APP_HOME
-# Run "puma" command on container's start
-CMD ["puma"]
+# create application home directory and copy files
+COPY . /app
+```
+
+Then we specify a default command that should be run when a container from this image starts:
+
+```
+CMD [ "node", "server.js" ]
 ```
 
 ## Build Container Image
 
-Once you defined how your image should be built, run the following command inside your `my-iac-tutorial` directory to create a container image for raddit application:
+Once you defined how your image should be built, run the following command inside your `my-iac-tutorial` directory to create a container image for the node-svc application:
 
 ```bash
-$ docker build --tag raddit .
+$ docker build -t <yourDockerID>/node-svc-v1 .
 ```
 
-The resulting image will be named `raddit`. Find it in the list of your local images:
+The resulting image will be named `node-svc`. Find it in the list of your local images:
 
 ```bash
-$ docker images | grep raddit
+$ docker images | grep node-svc
 ```
 
 ## Bridge Network
