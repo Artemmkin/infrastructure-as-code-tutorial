@@ -1,6 +1,6 @@
 # Ansible
 
-In the previous lab, you used Terraform to implement Infrastructure as Code approach to managing the cloud infrastructure resources. Yet, we have another type of tooling to discover and that is **Configuration Management** (CM) tools.
+In the previous lab, you used Terraform to implement Infrastructure as Code approach to managing the cloud infrastructure resources. There is another major type of tooling we need to consider,   and that is **Configuration Management** (CM) tools.
 
 When talking about CM tools, we can often meet the acronym `CAPS` which stands for Chef, Ansible, Puppet and Saltstack - the most known and commonly used CM tools. In this lab, we're going to look at Ansible and see how CM tools can help us improve our operations.
 
@@ -14,7 +14,7 @@ _Scripts are bad at long term management of system configuration, because they m
 
 When you write a script, you use a scripting language syntax (Bash, Python) to write commands which you think should change the system's configuration. And the problem is that there are too many ways people can write the code that is meant to do the same things, which is the reason why scripts are often difficult to read and understand. Besides, there are various choices as to what language to use for a script: should you write it in Ruby which your colleagues know very well or Bash which you know better?
 
-Common configuration management operations are well-known: copy a file to a remote machine, create a folder, start/stop/enable a process, install packages, etc. So _we need a tool that would implement these common operations in a well-known tested way and provide us with a clean and understandable syntax for using them_. This way we wouldn't have to write complex scripts ourselves each time for the same tasks, possibly making mistakes along the way, but instead just tell the tool what should be done: what packages should be present, what processes should be started, etc.
+Common configuration management operations are well-known: copy a file to a remote machine, create a folder, start/stop/enable a process, install packages, etc. So _we need a tool that would implement these common operations in a well-known and tested way, providing us with a clean and understandable syntax for using them_. This way we wouldn't have to write complex scripts ourselves each time for the same tasks, possibly making mistakes along the way, but instead just tell the tool what should be done: what packages should be present, what processes should be started, etc.
 
 This is exactly what CM tools do. So let's check it out using Ansible as an example.
 
@@ -22,13 +22,13 @@ This is exactly what CM tools do. So let's check it out using Ansible as an exam
 
 NOTE: this lab assumes Ansible v2.4 is installed. It may not work as expected with other versions as things change quickly.
 
-Issue the following commands:
+Issue the following commands in the Google cloud shell (note that Ansible will not remain installed when your shell goes to sleep):
 
-```
+```bash
 $ sudo apt update
 $ sudo apt install software-properties-common
 $ sudo apt-add-repository --yes --update ppa:ansible/ansible
-$ sudo apt install ansible
+$ sudo apt install -y ansible
 ```
 
 If you have issues, reference the instructions on how to install Ansible on your system from [official documentation](http://docs.ansible.com/ansible/latest/intro_installation.html).
@@ -41,15 +41,15 @@ $ ansible --version
 
 ## Infrastructure as Code project
 
-Create a new directory called `ansible` inside your `iac-tutorial` repo, which we'll use to save the work done in this lab.
+Create a new directory called `06-ansible` inside your `iac-tutorial` repo, which we'll use to save the work done in this lab.
 
 ## Provision compute resources
 
 Start a VM and create other GCP resources for running your application applying Terraform configuration you wrote in the previous lab:
 
 ```bash
-$ cd ./terraform
-$ terraform apply
+$ cd ./05-terraform  # adapt this command as necessary to get to the directory
+$ terraform apply -auto-approve
 ```
 
 ## Deploy playbook
@@ -60,90 +60,117 @@ Ansible uses **tasks** to define commands used for system configuration. Each An
 
 Each task uses some **module** to perform a certain operation on the configured system. Modules are well tested functions which are meant to perform common system configuration operations.
 
-Let's look at our `deploy.sh`  script first to see what modules we might need to use:
+Let's look at our `install.sh` first to see what modules we might need to use:
 
 ```bash
 #!/bin/bash
-set -e
+set -e  # exit immediately if anything returns non-zero. See https://www.javatpoint.com/linux-set-command
 
-echo "  ----- clone application repository -----  "
-git clone https://github.com/Artemmkin/raddit.git
 
-echo "  ----- install dependent gems -----  "
-cd ./raddit
-sudo bundle install
-
-echo "  ----- start the application -----  "
-sudo systemctl start raddit
-sudo systemctl enable raddit
+echo "  ----- download, initialize, and run app -----  "
+git clone https://github.com/dm-academy/node-svc-v1
+cd node-svc-v1
+git checkout 02
+npm install
+npm install express
 ```
 
-We clearly see here 3 different types of operations: cloning a git repo, installing gems via Bundler, and managing a service via systemd.
+We clearly see here several types of operations: cloning a git repo and setting the branch, initializing npm, and installing express (a Node package).
+
+We also, to start the service, need to run this command: 
+
+`$ sudo nodejs /home/node-user/node-svc-v1/server.js &`
 
 So we'll search for Ansible modules that allow to perform these operations. Luckily, there are modules for all of these operations.
 
-Ansible uses YAML syntax to define tasks, which makes the configuration looks clean.
+Ansible uses YAML syntax to define tasks, which makes the configuration readable.
 
-Let's create a file called `deploy.yml` inside the `ansible` directory:
+Let's create a file called `deploy.yml` ("deploy" including both installation and launching) inside the `ansible` directory:
 
 ```yaml
 ---
-- name: Deploy Raddit App
-  hosts: raddit-app
+- name: Deploy node-svc App
+  hosts: node-svc
   tasks:
     - name: Fetch the latest version of application code
+    # see https://docs.ansible.com/ansible/latest/modules/git_module.html
       git:
-        repo: 'https://github.com/Artemmkin/raddit.git'
-        dest: /home/raddit-user/raddit
-      register: clone
+        repo: 'https://github.com/dm-academy/node-svc-v1'
+        dest: /home/node-user/node-svc-1
+        version: "02"
+      register: clone 
 
-    - name: Install application dependencies
-      become: true
-      bundler:
-        state: present
-        chdir: /home/raddit-user/raddit
-      when: clone.changed
-      notify: restart raddit
+    - name: NPM install express and initialize app
+    # see https://docs.ansible.com/ansible/latest/modules/npm_module.html
+      npm:
+        name: express
+        global: yes
 
-  handlers:
-  - name: restart raddit
-    become: true
-    systemd: name=raddit state=restarted
+    - name: Install packages based on package.json.
+      npm:
+        path: /home/node-user/node-svc-1
+
+    - name: Start the nodejs server
+    # see https://codelike.pro/deploy-nodejs-app-with-ansible-git-pm2/
+      sudo_user: node-user
+      command: pm2 start server.js --name node-app chdir=/home/node-user/node-svc-1s
+      ignore_errors: yes
+      when: npm_finished.changed
+
 ```
 
-In this configuration file, which is called a **playbook** in Ansible terminology, we define 3 tasks:
+In this configuration file, which is called a **playbook** in Ansible terminology, we define several tasks.
+
+The `name` that precedes each task is used as a comment that will show up in the terminal when the task starts to run.
+
+`register` option allows to capture the result output from running a task.
 
 The `first task` uses git module to pull the code from GitHub.
 
 ```yaml
 - name: Fetch the latest version of application code
-  git:
-    repo: 'https://github.com/Artemmkin/raddit.git'
-    dest: /home/raddit-user/raddit
-  register: clone
+    # see https://docs.ansible.com/ansible/latest/modules/git_module.html
+      git:
+        repo: 'https://github.com/dm-academy/node-svc-v1'
+        dest: /home/node-user/node-svc-1
+        version: 02
+        register: git_finished
 ```
 
-The `name` that precedes each task is used as a comment that will show up in the terminal when the task starts to run.
 
-`register` option allows to capture the result output from running a task. We will use it later in a conditional statement for running a `bundle install` task.
-
-The second task runs bundler in the specified directory:
+The second task installs the npm package express and initializes the app in the specified directory:
 
 ```yaml
-- name: Install application dependencies
-  become: true
-  bundler:
-    state: present
-    chdir: /home/raddit-user/raddit
-  when: clone.changed
-  notify: restart raddit
+
+    - name: NPM install express and initialize app
+    # see https://docs.ansible.com/ansible/latest/modules/npm_module.html
+      npm:
+        name: coffee-script
+        global: yes
+
+    - name: Install packages based on package.json.
+      npm:
+        path: /home/node-user/node-svc-1
+
 ```
 
-Note, how for each module we use a different set of module options (in this case `state` and `chdir`). You can find full information about the options in a module's documentation.
+The third task runs the server:
 
-In the second task, we use a conditional statement [when](http://docs.ansible.com/ansible/latest/playbooks_conditionals.html#the-when-statement) to make sure the `bundle install` task is only run when the local repo was updated, i.e. the output from running git clone command was changed. This allows us to save some time spent on system configuration by not running unnecessary commands.
+```yaml
+    - name: Start the nodejs server
+    # see https://codelike.pro/deploy-nodejs-app-with-ansible-git-pm2/
+      sudo_user: node-user
+      command: pm2 start server.js --name node-app chdir=/home/node-user/node-svc-1s
+      ignore_errors: yes
+      when: npm_finished.changed
 
-On the same level as tasks, we also define a **handlers** block. Handlers are special tasks which are run only in response to notification events from other tasks. In our case, `raddit` service gets restarted only when the `bundle install` task is run.
+```
+
+Note, how for each module we use a different set of module options. You can find full information about the options in a module's documentation.
+
+In the second task, we use a conditional statement [when](http://docs.ansible.com/ansible/latest/playbooks_conditionals.html#the-when-statement) to make sure the `npm install` task is only run when the local repo was updated, i.e. the output from running git clone command was changed. This allows us to save some time spent on system configuration by not running unnecessary commands.
+
+On the same level as tasks, we also define a **handlers** block. Handlers are special tasks which are run only in response to notification events from other tasks. In our case, `node-svc` service gets restarted only when the `npm install` task is run.
 
 ## Inventory file
 
@@ -154,21 +181,21 @@ To be able to connect to a remote VM, Ansible needs information like IP address 
 Create a file called `hosts.yml` inside `ansible` directory with the following content (make sure to change the `ansible_host` parameter to public IP of your VM):
 
 ```yaml
-raddit-app:
+node-svc:
   hosts:
-    raddit-instance:
+    node-svc-01:
       ansible_host: 35.35.35.35
-      ansible_user: raddit-user
+      ansible_user: node-user
 ```
 
-Here we define a group of hosts (`raddit-app`) under which we list the hosts that belong to this group. In this case, we list only one host under the hosts group and give it a name (`raddit-instance`) and information on how to connect to the host.
+Here we define a group of hosts (`node-svc`) under which we list the hosts that belong to this group. In this case, we list only one host under the hosts group and give it a name (`node-svc-01`) and information on how to connect to the host.
 
-Now note, that inside our `deploy.yml` playbook we specified `raddit-app` host group in the `hosts` option before the tasks:
+Now note, that inside our `deploy.yml` playbook we specified `node-svc` host group in the `hosts` option before the tasks:
 
 ```yaml
 ---
-- name: Deploy Raddit App
-  hosts: raddit-app
+- name: Deploy node-svc app
+  hosts: node-svc-01
   tasks:
   ...
 ```
@@ -184,7 +211,7 @@ Let's define custom Ansible configuration for our directory. Create a file calle
 ```ini
 [defaults]
 inventory = ./hosts.yml
-private_key_file = ~/.ssh/raddit-user
+private_key_file = ~/.ssh/node-user
 host_key_checking = False
 ```
 
@@ -197,13 +224,13 @@ Now it's time to run your playbook and see how it works.
 Use the following commands to start a deployment:
 
 ```bash
-$ cd ./ansible
+$ cd ./06-ansible
 $ ansible-playbook deploy.yml
 ```
 
 ## Access Application
 
-Access the application in your browser by its public IP (don't forget to specify the port 9292) and make sure application has been deployed and is functional.
+Access the application in your browser by its public IP (don't forget to specify the port 3000) and make sure application has been deployed and is functional.
 
 ## Futher Learning Ansible
 

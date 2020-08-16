@@ -86,13 +86,13 @@ NAME                 NETWORK  DIRECTION  PRIORITY  ALLOW     DENY  DISABLED
 allow-node-svc-3000  default  INGRESS    1000      tcp:3000        False
 ```
 
-## Configuiration and deployment scripts
+## Installation script
 
 Before we can run our application, we need to create a running environment for it by installing dependent packages and configuring the OS. Then we copy the application, initialize NPM and download express.js, and start the server.
 
 We are going to use the same commands we used before to do that, but this time, instead of running commands one by one, we'll create a `bash script` to save us some struggle.
 
-In the `03-script` directory create a bash script `install.sh` to install node, npm, express, and git, and download the app and initialize node.
+In the `03-script` directory create bash script `config.sh` to install node, npm, express, and git. Create a script `install.sh` to download the app and initialize node.
 
 ```bash
 #!/bin/bash
@@ -101,6 +101,11 @@ set -e  # exit immediately if anything returns non-zero. See https://www.javatpo
 echo "  ----- install node, npm, git -----  "
 apt-get update
 apt-get install -y nodejs npm git
+```
+
+```bash
+#!/bin/bash
+set -e  # exit immediately if anything returns non-zero. See https://www.javatpoint.com/linux-set-command
 
 echo "  ----- download, initialize, and run app -----  "
 git clone https://github.com/dm-academy/node-svc-v1
@@ -110,6 +115,7 @@ npm install
 npm install express 
 ```
 
+NOTE: Why two scripts? Discuss in class.    
 
 
 ## Run the scripts
@@ -118,12 +124,13 @@ Copy the script to the created VM:
 
 ```bash
 $ INSTANCE_IP=$(gcloud --format="value(networkInterfaces[0].accessConfigs[0].natIP)" compute instances describe node-svc)
-$ scp -r install.sh node-user@${INSTANCE_IP}:/home/node-user
+$ scp -r config.sh install.sh node-user@${INSTANCE_IP}:/home/node-user
 ```
 
 If sucessful, you should see something like: 
 
 ```bash
+config.sh                                                              100%  214   279.9KB/s   00:00    
 install.sh                                                              100%  214   279.9KB/s   00:00    
 ```
 
@@ -144,8 +151,8 @@ Have a look at what's in the directory (use `ls` and `cat`). Do you understand e
 
 Run the script and launch the server:
 ```bash
-$ chmod +x install.sh
-$ sudo ./install.sh 
+$ chmod +x *install*.sh
+$ sudo ./config.sh && ./install.sh # running 2 commands on one line
 $ sudo nodejs node-svc-v1/server.js &
 ```
 The last output should be `Running on 3000`. You may need to hit Return or Enter to get a command prompt. 

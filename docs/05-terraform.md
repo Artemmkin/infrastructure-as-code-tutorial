@@ -131,18 +131,20 @@ $ gcloud compute instances describe node-svc
 
 ## Deploy Application
 
-We did provisioning via Terraform, but we still need to run a command to start our application. Let's do this remotely this time, instead of logging into the machine:
+We did provisioning via Terraform, but we still need to install and start our application. Let's do this remotely this time, instead of logging into the machine:
 
-Get the IP of the created VM:
 
 ```bash
-$ INSTANCE_IP=$(gcloud --format="value(networkInterfaces[0].accessConfigs[0].natIP)" compute instances describe node-svc)
-$ rsh ${INSTANCE_IP} -l node-user sudo nodejs /home/node-user/node-svc-v1/server.js &
+$ INSTANCE_IP=$(gcloud --format="value(networkInterfaces[0].accessConfigs[0].natIP)" compute instances describe node-svc) # get IP of VM
+$ scp -r install.sh node-user@${INSTANCE_IP}:/home/node-user # copy install script
+$ rsh ${INSTANCE_IP} -l node-user chmod +x /home/node-user/install.sh # set permissions
+$ rsh ${INSTANCE_IP} -l node-user /home/node-user/install.sh # install app
+$ rsh ${INSTANCE_IP} -l node-user sudo nodejs /home/node-user/node-svc-v1/server.js & # run app
 ```
 
 NOTE: If you get an offending ECDSA key error, use the suggested removal command.
 
-NOTE: If you get the error `Permission denied (publickey).`, this probably means that your ssh-agent no longer has the raddit-user private key added. This easily happens if the Google Cloud Shell goes to sleep and wipes out your session. Check via issuing `ssh-add -l`. You should see something like `2048 SHA256:bII5VsQY3fCWXEai0lUeChEYPaagMXun3nB9U2eoUEM /home/betz4871/.ssh/raddit-user (RSA)`. If you do not, re-issue the command `ssh-add ~/.ssh/node-user` and re-confirm with `ssh-add -l`. 
+NOTE: If you get the error `Permission denied (publickey).`, this probably means that your ssh-agent no longer has the node-user private key added. This easily happens if the Google Cloud Shell goes to sleep and wipes out your session. Check via issuing `ssh-add -l`. You should see something like `2048 SHA256:bII5VsQY3fCWXEai0lUeChEYPaagMXun3nB9U2eoUEM /home/betz4871/.ssh/node-user (RSA)`. If you do not, re-issue the command `ssh-add ~/.ssh/node-user` and re-confirm with `ssh-add -l`. 
 
 Connect to the VM via SSH:
 

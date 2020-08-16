@@ -90,7 +90,7 @@ Your template should look similar to this one:
   "provisioners": [
       {
           "type": "shell",
-          "script": "{{template_dir}}/../03-script/install.sh",
+          "script": "{{template_dir}}/../03-script/config.sh",
           "execute_command": "sudo {{.Path}}"
       }
   ]
@@ -100,7 +100,7 @@ Your template should look similar to this one:
 Make sure the template is valid:
 
 ```bash
-$ packer validate ./packer/raddit-base-image.json
+$ packer validate ./packer/node-base-image.json
 ```
 
 ## Create custom machine image
@@ -126,6 +126,11 @@ $ gcloud compute instances create node-svc \
 
 ## Deploy Application
 
+Copy the installation script to the VM:
+
+$ INSTANCE_IP=$(gcloud --format="value(networkInterfaces[0].accessConfigs[0].natIP)" compute instances describe node-svc)
+$ scp -r install.sh node-user@${INSTANCE_IP}:/home/node-user
+
 Connect to the VM via SSH:
 
 ```bash
@@ -135,14 +140,7 @@ $ ssh node-user@${INSTANCE_IP}
 
 NOTE: If you get an offending ECDSA key error, use the suggested removal command.
 
-NOTE: If you get the error `Permission denied (publickey).`, this probably means that your ssh-agent no longer has the raddit-user private key added. This easily happens if the Google Cloud Shell goes to sleep and wipes out your session. Check via issuing `ssh-add -l`. You should see something like `2048 SHA256:bII5VsQY3fCWXEai0lUeChEYPaagMXun3nB9U2eoUEM /home/betz4871/.ssh/raddit-user (RSA)`. If you do not, re-issue the command `ssh-add ~/.ssh/raddit-user` and re-confirm with `ssh-add -l`. 
-
-Connect to the VM via SSH:
-
-```bash
-$ INSTANCE_IP=$(gcloud --format="value(networkInterfaces[0].accessConfigs[0].natIP)" compute instances describe node-svc)
-$ ssh node-user@${INSTANCE_IP}
-```
+NOTE: If you get the error `Permission denied (publickey).`, this probably means that your ssh-agent no longer has the node-user private key added. This easily happens if the Google Cloud Shell goes to sleep and wipes out your session. Check via issuing `ssh-add -l`. You should see something like `2048 SHA256:bII5VsQY3fCWXEai0lUeChEYPaagMXun3nB9U2eoUEM /home/betz4871/.ssh/node-user (RSA)`. If you do not, re-issue the command `ssh-add ~/.ssh/node-user` and re-confirm with `ssh-add -l`. 
 
 Verify git, nodejs, npm, and the node-svc app are installed. Do you understand how they got there? (Your results may be slightly different, but if you get errors, investigate or ask for help):
 
@@ -156,6 +154,8 @@ $ npm -v
 $ ls node-svc-v1/
 LICENSE  node_modules  package.json  README.md  run.sh  server.js  test.sh
 ```
+
+
 
 Run server:
 
