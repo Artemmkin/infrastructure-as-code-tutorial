@@ -69,7 +69,7 @@ This Dockerfile repeats the steps that we did multiple times by now to configure
 
 We first choose an image that already contains Node of required version:
 ```
-# Use base image with Ruby installed
+# Use base image with node installed
 FROM node:11
 ```
 
@@ -103,7 +103,7 @@ CMD [ "node", "server.js" ]
 Once you defined how your image should be built, run the following command inside your `my-iac-tutorial` directory to create a container image for the node-svc application:
 
 ```bash
-$ docker build -t <yourDockerID>/node-svc-v1 .
+$ docker build -t <yourGoogleID>/node-svc-v1 .
 ```
 
 The resulting image will be named `node-svc`. Find it in the list of your local images:
@@ -111,99 +111,30 @@ The resulting image will be named `node-svc`. Find it in the list of your local 
 ```bash
 $ docker images | grep node-svc
 ```
+At your option, you can save your build command in a script, such as `build.sh`.
 
-## Bridge Network
-
-We are going to run multiple containers in this setup. To allow containers communicate with each other by container names, we'll create a [user-defined bridge network](https://docs.docker.com/engine/userguide/networking/#user-defined-networks):
-
-```bash
-$ docker network create raddit-network
-```
-
-Verify that the network was created:
+Now, run the container: 
 
 ```bash
-$ docker network ls
+$ docker run -d -p 8081:3000 <yourGoogleID>/node-svc-v1
 ```
 
-## MongoDB Container
+Notice the "8081:3000" syntax. This means that while the container is running on port 3000 internally, it is externally exposed via port 8081. 
 
-We shouldn't forget that we also need a MongoDB for our application to work.
+Again, you may wish to save this in a script, such as `run.sh`.
 
-The philosophy behind containers is that we create one container per process. So we'll run MongoDB in another container.
-
-We will use a public image from Docker Hub to run a MongoDB container alongside raddit application container. However, I recommend you for the sake of practice write a Dockerfile for MongoDB and create your own image.
-
-Because MongoDB is a stateful service, we'll first create a named volume for it to persist the data beyond the container removal.
+Now, test the container: 
 
 ```bash
-$ docker volume create mongo-data
+$ curl localhost:8081
+Successful request.
 ```
 
-Check that volume was created:
-
-```bash
-$ docker volume ls | grep mongo-data
-```
-
-Now run the following command to download a MongodDB image and start a container from it:
-
-```bash
-$ docker run --name mongo-database \
-    --volume mongo-data:/data/db \
-    --network raddit-network \
-    --detach mongo:3.2
-```
-
-Verify that the container is running:
-
-```bash
-$ docker container ls
-```
-
-## Start Application Container
-
-Start the application container from the image you've built:
-
-```bash
-$ docker run --name raddit-app \
-    --env DATABASE_HOST=mongo-database \
-    --network raddit-network \
-    --publish 9292:9292 \
-    --detach raddit
-```
-
-Note, how we also passed an environment variable with the command to the application container. Since MongoDB is not reachable at `localhost` as it was in the previous labs, [we need to pass the environment variable with MongoDB address](https://github.com/Artemmkin/iac-tutorial/blob/master/raddit-app/app.rb#L11) to tell our application where to connect. Automatic DNS resolution of container names within a user-defined network makes it possible to simply pass the name of a MongoDB container instead of an IP address.
-
-Port mapping option (`--publish`) that we passed to the command is used to make the container reachable to the outsite world.
-
-## Access Application
-
-To access via the Google Cloud Shell, use the Web Preview: 
-
-![](../img/webPreview.png)
-
-AT THIS WRITING, you cannot select port 9292. Select any offered port: 
-
-![](../img/webPreviewPort.png)
-
-You will receive an error. Notice your URL which should look something like this: 
-
-`https://8080-dot-8658285-dot-devshell.appspot.com/?authuser=0`
-
-The first four digits after the `https://` represent the desired port. Change this to 9292, for example:
-
-`https://9292-dot-8658285-dot-devshell.appspot.com/?authuser=0`
-
-(Do not try to use that URL. Modify the one provided you.)
-
-You should now be able to see the application. 
-
-(If you are running this tutorial locally, the application should be accessible to your at http://localhost:9292)
+Again, you may wish to save this in a script, such as `test.sh`.
 
 ## Save and commit the work
 
-Save and commit the `Dockerfile` created in this lab into your `iac-tutorial` repo.
+Save and commit the files created in this lab.
 
 ## Conclusion
 
@@ -211,13 +142,16 @@ In this lab, you adopted containers for running your application. This is a diff
 
 We describe the configuration of our container image in a Dockerfile using Dockerfile's syntax. We then save that Dockefile in our application repository. This way we can build the application image consistently across any environments.
 
-Destroy the current playground before moving on to the next lab.
+Destroy the current playground before moving on to the next lab, through `docker ps`, `docker kill`, `docker images`, and `docker rmi`. In the example below, the container is named "beautiful_pascal". Yours will be different. Follow the example, substituting yours. 
 
 ```bash
-$ docker rm -f mongo-database
-$ docker rm -f raddit-app
-$ docker volume rm mongo-data
-$ docker network rm raddit-network
+$ docker ps
+CONTAINER ID        IMAGE                      COMMAND                  CREATED             STATUS              PORTS                    NAMES
+64e60b7b0c81        charlestbetz/node-svc-v1   "docker-entrypoint.s…"   10 minutes ago      Up 10 minutes       0.0.0.0:8081->3000/tcp   beautiful_pascal
+$ docker kill beautiful_pascal 
+$ docker images
+# returns list of your images
+$ docker rmi <one or more image names> -f
 ```
 
 Next: [Docker Compose](09-docker-compose.md)
