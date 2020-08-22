@@ -1,5 +1,8 @@
 ## Docker Compose
 
+## PENDING CREATION OF node-svc MULTI-ARCHITECTURE
+## DISREGARD RADDIT APP
+
 In the last lab, we learned how to create Docker container images using Dockerfile and implementing Infrastructure as Code approach.
 
 This time we'll learn how to describe in code and manage our local container infrastructure with [Docker Compose](https://docs.docker.com/compose/overview/).
