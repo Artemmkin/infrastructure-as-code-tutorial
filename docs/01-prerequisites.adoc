@@ -1,0 +1,38 @@
+= Prerequisites
+
+== Google Cloud Platform
+
+In this tutorial, we use the https://cloud.google.com/[Google Cloud Platform] to provision the compute infrastructure.
+You have already signed up.
+
+Start in the Google Cloud Shell.
+https://cloud.google.com/shell/docs/using-cloud-shell[(review)]
+
+== Google Cloud Platform
+
+=== Set a Default Project, Compute Region and Zone
+
+This tutorial assumes a default compute region and zone have been configured.
+
+Set a default compute region appropriate to your location (https://cloud.google.com/compute/docs/regions-zones[GCP regions and zones]):
+
+[source,bash]
+----
+$ gcloud config set compute/region us-central1
+----
+
+Set a default compute zone appropriate to the zone:
+
+[source,bash]
+----
+$ gcloud config set compute/zone us-central1-c
+----
+
+Verify the configuration settings:
+
+[source,bash]
+----
+$ gcloud config list
+----
+
+Next: xref:02-manual-operations.adoc[Manual operations]
