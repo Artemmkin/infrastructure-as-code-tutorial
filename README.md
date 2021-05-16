@@ -13,6 +13,18 @@ This tutorial is not meant to give a complete guide on how to use a specific too
 
 _See [my presentation at DevOpsDays Silicon Valley](https://www.youtube.com/watch?v=XbcW2B7roLo&t=) in which I talk more in depth about the tutorial._
 
+## Need your help!
+
+This tutorial was created in 2018 and wasn't being kept up to date. Therefore, some of the instructions may not work due to updated APIs, obsolete repositories, etc. I apologize for that, but I currently don't have time to update this tutorial. So if you find that something is broken and you find a fix, please submit a PR. 
+
+When submitting a PR, make sure you include a description for it, i.e. what's broken and a test plan for the fix.
+
+Also, note that some of things need to be updated in several different repositories at the same time. Main repositories used in this tutorial:
+
+* https://github.com/Artemmkin/infrastructure-as-code-tutorial
+* https://github.com/Artemmkin/infrastructure-as-code-example
+* https://github.com/Artemmkin/raddit
+
 ## Target Audience
 
 The target audience for this tutorial is anyone who loves or/and works in IT.
