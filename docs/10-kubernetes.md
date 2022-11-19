@@ -58,7 +58,7 @@ We'll use this Terraform code to create a Kubernetes cluster.
 
 ## Create Kubernetes Cluster
 
-`main.tf` which you downloaded holds all the information about the cluster that should be created. It's parameterized using Terraform [input variables](https://www.terraform.io/intro/getting-started/variables.html) which allow you to easily change configuration parameters.
+`main.tf` which you downloaded holds all the information about the cluster that should be created. It's parameterized using Terraform [input variables](https://spacelift.io/blog/how-to-use-terraform-variables) which allow you to easily change configuration parameters.
 
 Look into `terraform.tfvars` file which contains definitions of the input variables and change them if necessary. You'll most probably want to change `project_id` value.
 
