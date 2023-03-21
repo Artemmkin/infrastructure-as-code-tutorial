@@ -198,7 +198,7 @@ $ ansible-playbook deploy.yml
 
 Access the application in your browser by its public IP (don't forget to specify the port 9292) and make sure application has been deployed and is functional.
 
-## Futher Learning Ansible
+## Further Learning Ansible
 
 There's a whole lot to learn about Ansible. Try playing around with it more and create a `playbook` which provides the same system configuration as your `configuration.sh` script. Save it under the name `configuration.yml` inside the `ansible` folder, then use it inside [ansible provisioner](https://www.packer.io/docs/provisioners/ansible.html) instead of shell in your Packer template.
 
